@@ -1,6 +1,7 @@
 # BetterPaintTool
-![Image1](https://github.com/QuestionableM/SM-BetterPaintTool/blob/main/Images/GuiPreview.png)
-<br/>
+<p align="center">
+  <img src="https://github.com/QuestionableM/SM-BetterPaintTool/blob/main/Images/GuiPreview.png?raw=true" alt="Sublime's custom image"/>
+</p>
 A DLL mod for Scrap Mechanic which enhances the functionality of the vanilla Paint Tool and allows you to pick any color you want!
 
 # How to download and enable
