@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelEmpty" position="0 0 600 399" name="MainPanel">
+        <Property key="NeedMouse" value="true"/>
+        <Property key="NeedKey" value="false"/>
+        <Widget type="Button" skin="InventoryTab" position="20 0 200 50" align="Left Top" name="PresetColorsTab">
+            <Property key="Caption" value="Preset Colors"/>
+            <Property key="TextAlign" value="Center"/>
+            <Property key="FontName" value="SM_ItemTitle"/>
+            <Property key="TextShadow" value="true"/>
+            <Property key="NeedKey" value="false"/>
+            <Property key="NeedMouse" value="true"/>
+            <Property key="Alpha" value="1"/>
+            <Property key="InheritsAlpha" value="false"/>
+        </Widget>
+        <Widget type="Button" skin="InventoryTab" position="240 0 200 50" align="Left Top" name="CustomColorTab">
+            <Property key="Caption" value="Custom"/>
+            <Property key="FontName" value="SM_ItemTitle"/>
+            <Property key="TextAlign" value="Center"/>
+            <Property key="TextShadow" value="true"/>
+            <Property key="NeedKey" value="false"/>
+            <Property key="NeedMouse" value="true"/>
+            <Property key="InheritsAlpha" value="false"/>
+        </Widget>
+        <Widget type="Widget" skin="BackgroundPopup" position="0 50 600 349" align="Default" name="PresetColorsWnd">
+            <Property key="NeedKey" value="false"/>
+            <Property key="NeedMouse" value="true"/>
+            <Property key="InheritsAlpha" value="false"/>
+            <Widget type="TextBox" skin="TextBox" position="49 49 499 49">
+                <Property key="Caption" value="#{PAINT_TOOL_TITLE}"/>
+                <Property key="FontName" value="SM_HeaderLarge_Wide"/>
+                <Property key="TextAlign" value="Center"/>
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedMouse" value="false"/>
+            </Widget>
+            <Widget type="ItemBox" skin="InventoryItemBox2" position="49 98 510 201" name="ColorGrid">
+                <Property key="NeedKey" value="false"/>
+                <Property key="NeedDragDrop" value="false"/>
+            </Widget>
+        </Widget>
+        <Widget type="Widget" skin="BackgroundPopup" position="0 50 600 349" align="Default" name="CustomColorWnd">
+            <Property key="NeedKey" value="false"/>
+            <Property key="NeedMouse" value="true"/>
+            <Property key="InheritsAlpha" value="false"/>
+            <Widget type="Widget" skin="PanelEmpty" position="30 269 321 50" align="Left Top" name="ListBoxBG3">
+                <Property key="NeedMouse" value="true"/>
+                <Property key="NeedKey" value="true"/>
+                <Widget type="TextBox" skin="TextBox" position="168 0 153 50" align="HStretch Top">
+                    <Property key="FontName" value="SM_Button"/>
+                    <Property key="TextAlign" value="Center"/>
+                    <Property key="TextShadow" value="true"/>
+                    <Property key="Caption" value="Hex Color Input"/>
+                    <Property key="NeedKey" value="false"/>
+                    <Property key="NeedMouse" value="false"/>
+                </Widget>
+                <Widget type="Widget" skin="SearchBarBackground" position="0 0 153 50" align="HStretch Top">
+                    <Property key="NeedMouse" value="true"/>
+                    <Property key="NeedKey" value="true"/>
+                    <Widget type="EditBox" skin="EditBoxEmpty" position="2 2 148 46" align="HStretch VStretch" name="HexInput">
+                        <Property key="FontName" value="SM_Button"/>
+                        <Property key="TextAlign" value="Center"/>
+                        <Property key="TextShadow" value="true"/>
+                        <Property key="NeedMouse" value="true"/>
+                        <Property key="NeedKey" value="true"/>
+                    </Widget>
+                </Widget>
+            </Widget>
+            <Widget type="Widget" skin="PanelEmpty" position="30 30 300 50" name="ScrollR"/>
+            <Widget type="Widget" skin="PanelEmpty" position="30 105 300 50" name="ScrollG"/>
+            <Widget type="Widget" skin="PanelEmpty" position="30 180 300 50" name="ScrollB"/>
+            <Widget type="ImageBox" skin="ImageBox" position="420 30 150 150" name="ColorPicker">
+                <Property key="NeedKey" value="false"/>
+            </Widget>
+            <Widget type="ImageBox" skin="ImageBox" position="420 200 150 30" name="HsvPicker">
+                <Property key="NeedKey" value="false"/>
+            </Widget>
+        </Widget>
+    </Widget>
+    <CodeGeneratorSettings/>
+</MyGUI>
