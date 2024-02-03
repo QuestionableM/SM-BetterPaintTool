@@ -117,5 +117,8 @@ void write_string_to_file(const std::string& path, const std::string& data)
 
 void CustomPaintToolGui::writeIfNotExists()
 {
+	if (file_exists(CustomPaintToolGui::CustomLayoutPath))
+		return;
+
 	write_string_to_file(CustomPaintToolGui::CustomLayoutPath, CustomPaintToolGui::getCustomPaintToolGuiString());
 }
