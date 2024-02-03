@@ -5,7 +5,7 @@ A DLL mod for Scrap Mechanic which enhances the functionality of the vanilla Pai
 
 # How to download and enable
 
-There are 2 ways to enable the CustomAudioExtension module:
+There are 2 ways to enable the BetterPaintTool module:
 
 <details>
 <summary><small>SM-DLL-Injector</small></summary>
