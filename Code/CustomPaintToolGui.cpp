@@ -1,5 +1,6 @@
 #include "CustomPaintToolGui.hpp"
-#include "DirectoryManager.hpp"
+
+#include "SmSdk/DirectoryManager.hpp"
 
 #include <fstream>
 

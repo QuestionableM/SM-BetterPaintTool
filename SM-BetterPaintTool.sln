@@ -5,6 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SM-BetterPaintTool", "SM-BetterPaintTool.vcxproj", "{52468B9C-003C-4F81-A9C4-01AEAF38CA40}"
 	ProjectSection(ProjectDependencies) = postProject
+		{8C6CD4F9-3844-4A08-B6AF-7F7796978FCB} = {8C6CD4F9-3844-4A08-B6AF-7F7796978FCB}
 		{DD2380CE-3216-409E-87FA-3BD90B5A9ED5} = {DD2380CE-3216-409E-87FA-3BD90B5A9ED5}
 		{E99195B0-24EE-40F9-B673-38CCFFCDD225} = {E99195B0-24EE-40F9-B673-38CCFFCDD225}
 	EndProjectSection
@@ -12,6 +13,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libMinHook", "libMinHook\libMinHook.vcxproj", "{E99195B0-24EE-40F9-B673-38CCFFCDD225}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jsoncpp", "jsoncpp.vcxproj", "{DD2380CE-3216-409E-87FA-3BD90B5A9ED5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bullet3", "bullet3\bullet3.vcxproj", "{8C6CD4F9-3844-4A08-B6AF-7F7796978FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +41,12 @@ Global
 		{DD2380CE-3216-409E-87FA-3BD90B5A9ED5}.Release|x64.Build.0 = Release|x64
 		{DD2380CE-3216-409E-87FA-3BD90B5A9ED5}.ReleaseMaxOptimization|x64.ActiveCfg = ReleaseMaxOptimization|x64
 		{DD2380CE-3216-409E-87FA-3BD90B5A9ED5}.ReleaseMaxOptimization|x64.Build.0 = ReleaseMaxOptimization|x64
+		{8C6CD4F9-3844-4A08-B6AF-7F7796978FCB}.Debug|x64.ActiveCfg = Debug|x64
+		{8C6CD4F9-3844-4A08-B6AF-7F7796978FCB}.Debug|x64.Build.0 = Debug|x64
+		{8C6CD4F9-3844-4A08-B6AF-7F7796978FCB}.Release|x64.ActiveCfg = Release|x64
+		{8C6CD4F9-3844-4A08-B6AF-7F7796978FCB}.Release|x64.Build.0 = Release|x64
+		{8C6CD4F9-3844-4A08-B6AF-7F7796978FCB}.ReleaseMaxOptimization|x64.ActiveCfg = ReleaseMaxOptimization|x64
+		{8C6CD4F9-3844-4A08-B6AF-7F7796978FCB}.ReleaseMaxOptimization|x64.Build.0 = ReleaseMaxOptimization|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

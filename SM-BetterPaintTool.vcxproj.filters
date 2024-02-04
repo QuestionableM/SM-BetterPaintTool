@@ -21,22 +21,28 @@
     <ClCompile Include="Code\Utils\Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\PaintToolGui.cpp">
+    <ClCompile Include="Code\BetterPaintToolGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GuiSystemManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\PaintTool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\InGameGuiManager.cpp">
+    <ClCompile Include="Code\BetterPaintTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Code\CustomPaintToolGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Color.cpp">
+    <ClCompile Include="Dependencies\SmSdk\src\Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\SmSdk\src\PointerGetters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\SmSdk\src\DirectoryManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\SmSdk\src\CreationManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\SmSdk\src\MyPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,49 +56,115 @@
     <ClInclude Include="Code\win_include.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\PaintToolGui.hpp">
+    <ClInclude Include="Code\BetterPaintToolGui.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GuiBase.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\GuiBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GuiSystemManager.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\GuiSystemManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GuiInterface.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\GuiInterface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\PaintTool.hpp">
+    <ClInclude Include="Code\BetterPaintTool.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\IToolNetworkData.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\IToolNetworkData.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\ClientTool.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\ClientTool.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\IToolImpl.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\IToolImpl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Tool.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\Tool.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\NetObj.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\NetObj.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\InventoryGui.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\InventoryGui.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\InGameGuiManager.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\InGameGuiManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\DirectoryManager.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\DirectoryManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\CustomPaintToolGui.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Color.hpp">
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\Color.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Physics\Physics.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\Task.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\InputTarget.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\MyPlayer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Physics\PhysicsProxy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\CreationManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\RigidBody.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\ChildShape.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\Shape.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\Aligned16Base.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\PaintToolGui.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\PaintTool.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Character.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\CharacterManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Player.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\PlayerManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\HarvestablePhysicsProxy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\Harvestable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\HarvestableManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\Joint.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\JointPhysicsProxy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,13 +1,16 @@
 #include "Utils/Console.hpp"
 
-#include "PaintToolGui.hpp"
-#include "PaintTool.hpp"
+#include "BetterPaintToolGui.hpp"
+#include "BetterPaintTool.hpp"
 
 #include <Windows.h>
 #include <MinHook.h>
 
 static bool ms_mhInitialized = false;
 static bool ms_mhHooksAttached = false;
+
+#define DEFINE_HOOK(address, detour, original) \
+	MH_CreateHook((LPVOID)(v_mod_base + address), (LPVOID)detour, (LPVOID*)&original)
 
 void process_attach()
 {
@@ -24,14 +27,13 @@ void process_attach()
 	//Do the hooking here
 	const std::uintptr_t v_mod_base = std::uintptr_t(GetModuleHandle(NULL));
 
-	if (MH_CreateHook((LPVOID)(v_mod_base + 0x3CE3F0),
-		(LPVOID)PaintToolGui::h_initialize,
-		(LPVOID*)&PaintToolGui::o_initialize) != MH_OK)
+	if (DEFINE_HOOK(0x3CE3F0, BetterPaintToolGui::h_initialize, BetterPaintToolGui::o_initialize) != MH_OK)
 		return;
 
-	if (MH_CreateHook((LPVOID)(v_mod_base + 0x3EF190),
-		(LPVOID)PaintTool::h_initialize,
-		(LPVOID*)&PaintTool::o_initialize) != MH_OK)
+	if (DEFINE_HOOK(0x3EF190, BetterPaintTool::h_initialize, BetterPaintTool::o_initialize) != MH_OK)
+		return;
+
+	if (DEFINE_HOOK(0x3EE6D0, BetterPaintTool::h_update, BetterPaintTool::o_update) != MH_OK)
 		return;
 
 	ms_mhHooksAttached = MH_EnableHook(MH_ALL_HOOKS) == MH_OK;
