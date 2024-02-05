@@ -7,6 +7,7 @@
 #include "CustomPaintToolGui.hpp"
 #include "BetterPaintTool.hpp"
 
+#include "Utils/MathUtils.hpp"
 #include "Utils/Console.hpp"
 
 #include <json/json.h>
@@ -81,11 +82,6 @@ void BetterPaintToolGui::eventEditTextChange(MyGUI::EditBox* _sender)
 	const Color v_col(v_color_str);
 	this->updateSlidersFromColor(v_col);
 	this->updateHsvAndColorPickersFromColor(v_col);
-}
-
-inline static float lerp(float a, float b, float f)
-{
-	return a * (1.0f - f) + (b * f);
 }
 
 void BetterPaintToolGui::eventColorMatrixSelectColor(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
@@ -206,9 +202,9 @@ Color BetterPaintToolGui::getColorFromHsvPicker()
 
 Color BetterPaintToolGui::getColorPickerColorTransformed(float uv_x, float uv_y, Color col)
 {
-	col.r = std::uint8_t(lerp(lerp(1.0f, col.getFloat(0), uv_x), 0.0f, uv_y) * 255.0f);
-	col.g = std::uint8_t(lerp(lerp(1.0f, col.getFloat(1), uv_x), 0.0f, uv_y) * 255.0f);
-	col.b = std::uint8_t(lerp(lerp(1.0f, col.getFloat(2), uv_x), 0.0f, uv_y) * 255.0f);
+	col.r = std::uint8_t(MathUtil::lerp(MathUtil::lerp(1.0f, col.getFloat(0), uv_x), 0.0f, uv_y) * 255.0f);
+	col.g = std::uint8_t(MathUtil::lerp(MathUtil::lerp(1.0f, col.getFloat(1), uv_x), 0.0f, uv_y) * 255.0f);
+	col.b = std::uint8_t(MathUtil::lerp(MathUtil::lerp(1.0f, col.getFloat(2), uv_x), 0.0f, uv_y) * 255.0f);
 
 	return col;
 }
@@ -326,14 +322,14 @@ void BetterPaintToolGui::updateHsvAndColorPickersFromColor(Color col)
 
 	const int v_width = this->getHsvPicker()->getSize().width;
 	this->getHsvPickerPointer()->setPosition(MyGUI::IntPoint(
-		int(lerp(0.0f, float(v_width), h / 360.0f)) - 2,
+		int(MathUtil::lerp(0.0f, float(v_width), h / 360.0f)) - 2,
 		0
 	));
 	
 	const MyGUI::IntSize v_pMatSz = this->getColorPicker()->getSize();
 	this->getColorPickerPointer()->setPosition(MyGUI::IntPoint(
-		int(lerp(0.0f, float(v_pMatSz.width), s)) - 2,
-		int(lerp(float(v_pMatSz.height), 0.0f, v)) - 2
+		int(MathUtil::lerp(0.0f, float(v_pMatSz.width), s)) - 2,
+		int(MathUtil::lerp(float(v_pMatSz.height), 0.0f, v)) - 2
 	));
 
 	this->updateTextureGradient(RatioToRGB(double(h / 360.0f)));
@@ -525,7 +521,7 @@ void BetterPaintToolGui::initialize()
 
 void BetterPaintToolGui::initParams(BetterPaintTool* paint_tool)
 {
-	const Color v_col = paint_tool->network_data->paint_color;
+	const Color v_col = paint_tool->m_pNetworkData->paint_color;
 
 	this->updateHsvAndColorPickersFromColor(v_col);
 	this->updateHexValueFromColor(v_col);

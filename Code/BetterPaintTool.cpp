@@ -7,12 +7,14 @@
 #include "SmSdk/Physics/PhysicsProxy.hpp"
 #include "SmSdk/Physics/Physics.hpp"
 #include "SmSdk/PlayerManager.hpp"
+#include "SmSdk/AudioManager.hpp"
 #include "SmSdk/MyPlayer.hpp"
 
 #include "SmSdk/CharacterManager.hpp"
 #include "SmSdk/Character.hpp"
 
 #include "BetterPaintToolGui.hpp"
+#include "Utils/MathUtils.hpp"
 #include "Utils/Console.hpp"
 
 #include <BulletCollision/NarrowPhaseCollision/btRaycastCallback.h>
@@ -24,17 +26,15 @@ BetterPaintTool::t_update_sig BetterPaintTool::o_update = nullptr;
 
 bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 {
+	sizeof(std::deque<int>);
+
 	const bool v_out = BetterPaintTool::o_initialize(self);
 
 	if (self->m_pGuiInterface)
 	{
 		self->m_pGuiInterface->m_mapStringToFunction.emplace("HexInput",
 			[self](const std::string& str) -> void {
-				Color v_color(str);
-
-				self->visualization_color = v_color;
-				self->paint_color = v_color;
-				self->network_data->paint_color = v_color;
+				self->setColor(str);
 			}
 		);
 
@@ -118,11 +118,46 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 			if (BetterPaintTool::getColorFromCollisionObject(
 				v_callback.m_collisionObject, v_callback.m_triangleIndex, v_obj_color))
 			{
-				self->network_data->paint_color = v_obj_color;
-				self->visualization_color = v_obj_color;
+				AudioManager::PlaySound("PaintTool - ColorPick");
+				self->setColor(v_obj_color);
 			}
 		}
 	}
+}
+
+Color BetterPaintTool::getInterpolatedColor()
+{
+	const float v_lerp_factor = std::min(std::max((this->time_since_last_change - 0.3f) * 2.22f, 0.0f), 1.0f);
+
+	const float v_prev_r = this->prev_paint_color.getFloat(0);
+	const float v_prev_g = this->prev_paint_color.getFloat(1);
+	const float v_prev_b = this->prev_paint_color.getFloat(2);
+
+	const float v_cur_r = this->visualization_color.getFloat(0);
+	const float v_cur_g = this->visualization_color.getFloat(1);
+	const float v_cur_b = this->visualization_color.getFloat(2);
+
+	Color v_output;
+	v_output.setFloat(0, MathUtil::lerp(v_prev_r, v_cur_r, v_lerp_factor));
+	v_output.setFloat(1, MathUtil::lerp(v_prev_g, v_cur_g, v_lerp_factor));
+	v_output.setFloat(2, MathUtil::lerp(v_prev_b, v_cur_b, v_lerp_factor));
+	v_output.a = 0xFF;
+
+	return v_output;
+}
+
+void BetterPaintTool::setColor(Color color)
+{
+	if (m_pNetworkData->paint_color == color)
+		return;
+
+	m_pNetworkData->paint_color = color;
+	m_pNetworkData->m_bColorUpdated = true;
+
+	this->prev_paint_color = this->getInterpolatedColor();
+	this->visualization_color = m_pNetworkData->paint_color;
+	this->time_since_last_change = 0.3f;
+	this->paint_color = m_pNetworkData->paint_color;
 }
 
 bool BetterPaintTool::getColorFromShape(int obj_idx, int tri_idx, Color& out_color)

@@ -6,15 +6,19 @@
 #include "IToolNetworkData.hpp"
 #include "ClientTool.hpp"
 
+#include <DirectXMath.h>
 #include <functional>
 
-struct PaintToolNetworkData : public IToolNetworkData
+class PaintToolNetworkData : public IToolNetworkData
 {
+public:
 	/* 0x0010 */ Color paint_color;
+	/* 0x0014 */ bool m_bColorUpdated;
 private:
-	/* 0x0014 */ char pad_0x14[0x4];
+	/* 0x0015 */ char pad_0x15[0x3];
 public:
 	/* 0x0018 */ std::function<void(void)> function;
+
 }; // Size: 0x58
 
 static_assert(sizeof(PaintToolNetworkData) == 0x58, "PaintToolNetworkData: Incorrect Size");
@@ -29,6 +33,7 @@ struct PaintToolSelectionData
 	/* 0x002C */ DirectX::XMINT3 m_selectionBoxMax;
 private:
 	/* 0x0038 */ char pad_0x38[0x8];
+
 }; // Size: 0x40
 
 static_assert(sizeof(PaintToolSelectionData) == 0x40, "PaintToolSelectionData: Incorrect Size");
@@ -38,7 +43,7 @@ class PaintTool : public ClientTool
 private:
 	/* 0x0548 */ char pad_0x548[0x8];
 public:
-	/* 0x0550 */ __int32 paint_color;
+	/* 0x0550 */ Color paint_color;
 	/* 0x0554 */ __int32 m_lmb_state;
 	/* 0x0558 */ __int32 m_rmb_state;
 private:
@@ -64,7 +69,7 @@ public:
 private:
 	/* 0x06CC */ char pad_0x6CC[0x4];
 public:
-	/* 0x06D0 */ PaintToolNetworkData* network_data;
+	/* 0x06D0 */ PaintToolNetworkData* m_pNetworkData;
 private:
 	/* 0x06D8 */ char pad_0x6D8[0x8];
 public:

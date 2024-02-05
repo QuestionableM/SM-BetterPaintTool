@@ -5,6 +5,7 @@
 #include "SmSdk/DirectoryManager.hpp"
 #include "SmSdk/CharacterManager.hpp"
 #include "SmSdk/PlayerManager.hpp"
+#include "SmSdk/AudioManager.hpp"
 #include "SmSdk/MyPlayer.hpp"
 
 #include "SmSdk/config.hpp"
@@ -31,6 +32,7 @@ GET_INSTANCE_DEFINE(GuiSystemManager, 0x128D7B0);
 GET_INSTANCE_DEFINE(CharacterManager, 0x128D8C0);
 GET_INSTANCE_DEFINE(CreationManager, 0x128D8C8);
 GET_INSTANCE_DEFINE(PlayerManager, 0x128D8B8);
+GET_INSTANCE_DEFINE(AudioManager, 0x128D720);
 GET_INSTANCE_DEFINE(MyPlayer, 0x128D658);
 
 #if defined(SMSDK_ENABLE_PHYSICS)

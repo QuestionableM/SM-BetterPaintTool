@@ -21,6 +21,10 @@ public:
 	static bool h_initialize(BetterPaintTool* self);
 	static void h_update(BetterPaintTool* self, float dt);
 
+	//Color that depends on time_since_last_change
+	Color getInterpolatedColor();
+	void setColor(Color color);
+
 	static bool getColorFromShape(int obj_idx, int tri_idx, Color& out_color);
 	static bool getColorFromJoint(PhysicsProxy* proxy, int tri_idx, Color& out_color);
 	static bool getColorFromCharacter(int char_idx, Color& out_color);

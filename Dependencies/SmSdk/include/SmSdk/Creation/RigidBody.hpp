@@ -20,20 +20,6 @@ public:
 		return m_vecChildShapes[id].get();
 	}
 
-	inline Joint* getJoint(int id)
-	{
-		int v_jnt_counter = 0;
-		for (const auto& v_cur_jnt : m_setJointStorage)
-		{
-			if (id == v_jnt_counter)
-				return v_cur_jnt.get();
-
-			v_jnt_counter++;
-		}
-
-		return nullptr;
-	}
-
 private:
 	/* 0x0028 */ char pad_0x28[0xC];
 public:

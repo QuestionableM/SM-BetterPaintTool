@@ -143,6 +143,8 @@
     <ClCompile Include="Code\Utils\Console.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Utils\MathUtils.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\AudioManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\Aligned16Base.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Character.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\CharacterManager.hpp" />
