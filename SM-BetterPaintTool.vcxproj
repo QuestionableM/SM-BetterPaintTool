@@ -146,6 +146,7 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\Aligned16Base.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Character.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\CharacterManager.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\BodyJointPhysicsProxy.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\ChildShape.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\Joint.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\JointPhysicsProxy.hpp" />

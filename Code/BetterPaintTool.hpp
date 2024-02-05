@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SmSdk/Physics/PhysicsProxy.hpp"
 #include "SmSdk/Tool/PaintTool.hpp"
 
 #include <functional>
@@ -21,7 +22,7 @@ public:
 	static void h_update(BetterPaintTool* self, float dt);
 
 	static bool getColorFromShape(int obj_idx, int tri_idx, Color& out_color);
-	static bool getColorFromJoint(int obj_idx, int tri_idx, Color& out_color);
+	static bool getColorFromJoint(PhysicsProxy* proxy, int tri_idx, Color& out_color);
 	static bool getColorFromCharacter(int char_idx, Color& out_color);
 	static bool getColorFromHarvestable(int hvs_idx, Color& out_color);
 	static bool getColorFromCollisionObject(const btCollisionObject* obj, int tri_idx, Color& out_color);

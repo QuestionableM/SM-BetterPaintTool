@@ -2,6 +2,7 @@
 
 #include "SmSdk/Harvestable/HarvestablePhysicsProxy.hpp"
 #include "SmSdk/Harvestable/HarvestableManager.hpp"
+#include "SmSdk/Creation/BodyJointPhysicsProxy.hpp"
 #include "SmSdk/Creation/CreationManager.hpp"
 #include "SmSdk/Physics/PhysicsProxy.hpp"
 #include "SmSdk/Physics/Physics.hpp"
@@ -141,17 +142,19 @@ bool BetterPaintTool::getColorFromShape(int obj_idx, int tri_idx, Color& out_col
 	return true;
 }
 
-bool BetterPaintTool::getColorFromJoint(int obj_idx, int tri_idx, Color& out_color)
+bool BetterPaintTool::getColorFromJoint(PhysicsProxy* proxy, int tri_idx, Color& out_color)
 {
-	if (tri_idx == -1) return false;
+	BodyJointPhysicsProxy* v_pJointProxy = reinterpret_cast<BodyJointPhysicsProxy*>(proxy);
+	if (tri_idx < 0 || tri_idx > v_pJointProxy->m_compoundShape.getNumChildShapes())
+		return false;
 
-	BodyStructure* v_body_data = CreationManager::GetBodyData(obj_idx);
-	if (!v_body_data) return false;
+	btCollisionShape* v_pJointShape = v_pJointProxy->m_compoundShape.getChildShape(tri_idx);
+	if (!v_pJointShape) return false;
 
-	Joint* v_jnt_data = v_body_data->body->getJoint(tri_idx);
-	if (!v_jnt_data) return false;
+	Joint* v_pJoint = reinterpret_cast<Joint*>(v_pJointShape->getUserPointer());
+	if (!v_pJoint) return false;
 
-	out_color = v_jnt_data->m_color;
+	out_color = v_pJoint->m_color;
 	out_color.a = 0xFF;
 
 	return true;
@@ -196,7 +199,7 @@ bool BetterPaintTool::getColorFromCollisionObject(
 	case PhysicsProxyType_Shape:
 		return BetterPaintTool::getColorFromShape(obj->getUserIndex(), tri_idx, out_color);
 	case PhysicsProxyType_Joint:
-		return BetterPaintTool::getColorFromJoint(obj->getUserIndex(), tri_idx, out_color);
+		return BetterPaintTool::getColorFromJoint(v_pProxy, tri_idx, out_color);
 	case PhysicsProxyType_Character:
 		return BetterPaintTool::getColorFromCharacter(obj->getUserIndex(), out_color);
 	case PhysicsProxyType_Harvestable:
