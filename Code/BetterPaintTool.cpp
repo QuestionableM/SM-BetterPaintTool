@@ -4,6 +4,7 @@
 #include "SmSdk/Harvestable/HarvestableManager.hpp"
 #include "SmSdk/Creation/BodyJointPhysicsProxy.hpp"
 #include "SmSdk/Creation/CreationManager.hpp"
+#include "SmSdk/Gui/InGameGuiManager.hpp"
 #include "SmSdk/Physics/PhysicsProxy.hpp"
 #include "SmSdk/Physics/Physics.hpp"
 #include "SmSdk/PlayerManager.hpp"
@@ -118,6 +119,12 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 			if (BetterPaintTool::getColorFromCollisionObject(
 				v_callback.m_collisionObject, v_callback.m_triangleIndex, v_obj_color))
 			{
+				char v_buffer[0x40];
+				const int v_buffer_sz = sprintf_s(v_buffer, "Color copied: #%02X%02X%02X%02X%02X%02X",
+					(std::uint32_t)v_obj_color.r, (std::uint32_t)v_obj_color.g, (std::uint32_t)v_obj_color.b,
+					(std::uint32_t)v_obj_color.r, (std::uint32_t)v_obj_color.g, (std::uint32_t)v_obj_color.b);
+
+				InGameGuiManager::DisplayAlertText(std::string(v_buffer, v_buffer_sz), 2.0f);
 				AudioManager::PlaySound("PaintTool - ColorPick");
 				self->setColor(v_obj_color);
 			}

@@ -154,6 +154,7 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\JointPhysicsProxy.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\RigidBody.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\Shape.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\HudGui2.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\PaintToolGui.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\Harvestable.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\HarvestableManager.hpp" />

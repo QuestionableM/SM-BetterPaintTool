@@ -176,5 +176,8 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\AudioManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\HudGui2.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
