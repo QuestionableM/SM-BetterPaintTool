@@ -88,6 +88,13 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 {
 	BetterPaintTool::o_update(self, dt);
 
+	//The game doesn't like it when multiple animations use the same animation file
+	if (self->m_fpAnims.current_anim != "color_picker" && self->m_fpAnims.current_anim != "color_picker_end")
+	{
+		self->m_fpAnims.removeAnimation("color_picker");
+		self->m_fpAnims.removeAnimation("color_picker_end");
+	}
+
 	if (self->is_equipped() && (GetAsyncKeyState(VK_MBUTTON) & 1))
 	{
 		Physics* v_pPhysics = Physics::GetInstance();
@@ -126,6 +133,12 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 
 				InGameGuiManager::DisplayAlertText(std::string(v_buffer, v_buffer_sz), 2.0f);
 				AudioManager::PlaySound("PaintTool - ColorPick");
+
+				self->m_fpAnims.resetAnimation("pick");
+				self->m_fpAnims.addNewAnimation("color_picker", "painttool_colorpick_idle", "color_picker_end", 0.0f, 1.0f, 5.0f);
+				self->m_fpAnims.addNewAnimation("color_picker_end", "painttool_colorpick", "idle", 0.0f, 0.7f, 1.0f);
+				self->setFpAndTpAnimation("color_picker");
+
 				self->setColor(v_obj_color);
 			}
 		}
