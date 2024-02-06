@@ -13,7 +13,7 @@ public:
 
 	static InGameGuiManager* GetInstance();
 
-	void _displayAlertText(const std::string& text, float duration = 4.0f)
+	inline void _displayAlertText(const std::string& text, float duration = 4.0f)
 	{
 		if (!m_pHudGui) return;
 
@@ -21,12 +21,30 @@ public:
 		m_pHudGui->m_alertTextTimer = duration;
 	}
 
-	static void DisplayAlertText(const std::string& text, float duration = 4.0f)
+	inline void _setInteractionText(const std::vector<std::string>& vec)
+	{
+		if (!m_pHudGui) return;
+
+		const std::size_t v_last_entry = m_pHudGui->m_vecInteractionTexts.size();
+
+		m_pHudGui->m_vecInteractionTexts.push_back(vec);
+		m_pHudGui->m_vecInteractionTexts[v_last_entry].push_back("");
+	}
+
+	inline static void DisplayAlertText(const std::string& text, float duration = 4.0f)
 	{
 		InGameGuiManager* v_pGuiMgr = InGameGuiManager::GetInstance();
 		if (!v_pGuiMgr) return;
 
 		v_pGuiMgr->_displayAlertText(text, duration);
+	}
+
+	inline static void SetInteractionText(const std::vector<std::string>& vec)
+	{
+		InGameGuiManager* v_pGuiMgr = InGameGuiManager::GetInstance();
+		if (!v_pGuiMgr) return;
+
+		v_pGuiMgr->_setInteractionText(vec);
 	}
 
 private:
