@@ -4,6 +4,12 @@
 </p>
 A DLL mod for Scrap Mechanic which enhances the functionality of the vanilla Paint Tool and allows you to pick any color you want!
 
+# Features
+- HSL color picker
+- Hex color input
+- R, G and B sliders to adjust each color channel precisely
+- Color picker (press Middle Mouse Button to use)
+
 # How to download and enable
 
 There are 2 ways to enable the BetterPaintTool module:
