@@ -9,6 +9,7 @@
 #include "SmSdk/Physics/Physics.hpp"
 #include "SmSdk/PlayerManager.hpp"
 #include "SmSdk/AudioManager.hpp"
+#include "SmSdk/InputManager.hpp"
 #include "SmSdk/MyPlayer.hpp"
 
 #include "SmSdk/CharacterManager.hpp"
@@ -95,7 +96,7 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 		self->m_fpAnims.removeAnimation("color_picker_end");
 	}
 
-	if (self->is_equipped() && (GetAsyncKeyState(VK_MBUTTON) & 1))
+	if (self->is_equipped() && InputManager::IsMouseButtonPressed(EMouseButton_Middle))
 	{
 		Physics* v_pPhysics = Physics::GetInstance();
 		if (!v_pPhysics) return;
@@ -137,7 +138,7 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 				self->m_fpAnims.resetAnimation("pick");
 				self->m_fpAnims.addNewAnimation("color_picker", "painttool_colorpick_idle", "color_picker_end", 0.0f, 1.0f, 5.0f);
 				self->m_fpAnims.addNewAnimation("color_picker_end", "painttool_colorpick", "idle", 0.0f, 0.7f, 1.0f);
-				self->setFpAndTpAnimation("color_picker");
+				self->setFpAnimation("color_picker");
 
 				self->setColor(v_obj_color);
 			}

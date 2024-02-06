@@ -159,6 +159,7 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\Harvestable.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\HarvestableManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\HarvestablePhysicsProxy.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\InputManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Player.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\PlayerManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\ClientTool.hpp" />
