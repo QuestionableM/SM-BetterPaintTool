@@ -7,6 +7,7 @@
 #include "SmSdk/PlayerManager.hpp"
 #include "SmSdk/AudioManager.hpp"
 #include "SmSdk/InputManager.hpp"
+#include "SmSdk/StaticValues.hpp"
 #include "SmSdk/MyPlayer.hpp"
 
 #include "SmSdk/config.hpp"
@@ -40,3 +41,8 @@ GET_INSTANCE_DEFINE(MyPlayer, 0x128D658);
 #if defined(SMSDK_ENABLE_PHYSICS)
 GET_INSTANCE_DEFINE(Physics, 0x128D628);
 #endif
+
+//STATIC VARIABLE DEFINITIONS
+
+StaticValues::PaintToolEraseLimiterType StaticValues::sm_paintToolEraseLimiter{};
+StaticValues::PaintToolPaintLimiterType StaticValues::sm_paintToolPaintLimiter{};

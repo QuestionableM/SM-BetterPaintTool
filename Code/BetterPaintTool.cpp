@@ -28,8 +28,6 @@ BetterPaintTool::t_update_sig BetterPaintTool::o_update = nullptr;
 
 bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 {
-	sizeof(std::deque<int>);
-
 	const bool v_out = BetterPaintTool::o_initialize(self);
 
 	if (self->m_pGuiInterface)

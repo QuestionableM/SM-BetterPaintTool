@@ -162,6 +162,7 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\InputManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Player.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\PlayerManager.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\StaticValues.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\ClientTool.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\PaintTool.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\Color.hpp" />
@@ -188,6 +189,8 @@
     <ClInclude Include="Code\Utils\Console.hpp" />
     <ClInclude Include="Code\win_include.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\config.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\Memory.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\StaticVariable.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
