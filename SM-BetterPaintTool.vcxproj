@@ -119,7 +119,7 @@
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\MyGUIEngine\include;$(SolutionDir)Dependencies\boost_uuid\include;$(SolutionDir)Dependencies\MinHook\include;$(SolutionDir)Dependencies\jsoncpp\include;$(SolutionDIr)Dependencies\SmSdk\include;$(SolutionDir)Dependencies\bullet3;$(SolutionDir)Code</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>

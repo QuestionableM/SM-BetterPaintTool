@@ -138,8 +138,10 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 		btCollisionWorld* v_pCollWorld = v_pPhysBase->collision_world2;
 
 		MyPlayer* v_pPlayer = MyPlayer::GetInstance();
-		const btVector3 v_ray_start = *reinterpret_cast<btVector3*>(&v_pPlayer->camera.position);
-		const btVector3 v_direction = *reinterpret_cast<btVector3*>(&v_pPlayer->camera.direction);
+		const btVector3 v_ray_start(v_pPlayer->camera.position.x,
+			v_pPlayer->camera.position.y, v_pPlayer->camera.position.z);
+		const btVector3 v_direction(v_pPlayer->camera.direction.x,
+			v_pPlayer->camera.direction.y, v_pPlayer->camera.direction.z);
 		const btVector3 v_ray_end = v_ray_start + v_direction * 7.0f;
 
 		ColorIndexRayResult v_callback;
