@@ -1,10 +1,12 @@
 #pragma once
 
 #include "SmSdk/config.hpp"
+
+#include "InGameGuiManagerInterface.hpp"
 #include "InventoryGui.hpp"
 #include "HudGui2.hpp"
 
-class InGameGuiManager
+class InGameGuiManager : public InGameGuiManagerInterface
 {
 	REMOVE_COPY_CONSTRUCTORS(InGameGuiManager);
 
@@ -28,7 +30,7 @@ public:
 		const std::size_t v_last_entry = m_pHudGui->m_vecInteractionTexts.size();
 
 		m_pHudGui->m_vecInteractionTexts.push_back(vec);
-		m_pHudGui->m_vecInteractionTexts[v_last_entry].push_back("");
+		m_pHudGui->m_vecInteractionTexts[v_last_entry].push_back("\n");
 	}
 
 	inline static void DisplayAlertText(const std::string& text, float duration = 4.0f)

@@ -127,7 +127,7 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 	self->updateSelectionData(self->m_paintSelection);
 	self->updateSelectionData(self->m_eraseSelection);
 
-	if (InputManager::IsMouseButtonPressed(EMouseButton_Middle))
+	if (!self->isErasingOrPainting() && InputManager::IsMouseButtonPressed(EMouseButton_Middle))
 	{
 		Physics* v_pPhysics = Physics::GetInstance();
 		if (!v_pPhysics) return;
@@ -138,8 +138,8 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 		btCollisionWorld* v_pCollWorld = v_pPhysBase->collision_world2;
 
 		MyPlayer* v_pPlayer = MyPlayer::GetInstance();
-		const btVector3& v_ray_start = *reinterpret_cast<btVector3*>(&v_pPlayer->camera.position);
-		const btVector3& v_direction = *reinterpret_cast<btVector3*>(&v_pPlayer->camera.direction);
+		const btVector3 v_ray_start = *reinterpret_cast<btVector3*>(&v_pPlayer->camera.position);
+		const btVector3 v_direction = *reinterpret_cast<btVector3*>(&v_pPlayer->camera.direction);
 		const btVector3 v_ray_end = v_ray_start + v_direction * 7.0f;
 
 		ColorIndexRayResult v_callback;
@@ -177,20 +177,24 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 	}
 }
 
+std::uint32_t BetterPaintTool::getLimiterAxisIndex(const DirectX::XMINT3& limiter)
+{
+	return std::uint32_t(std::abs(limiter.x))
+		+ (std::uint32_t(std::abs(limiter.y)) * 2)
+		+ (std::uint32_t(std::abs(limiter.z)) * 3);
+}
+
 void BetterPaintTool::updateSelectionData(PaintToolSelectionData& sel_data)
 {
 	if (!this->isObjectSelected(sel_data))
 		return;
 
 	g_isPaintToolHoldingObject = true;
+	const std::uint32_t v_limiter_idx = this->getLimiterAxisIndex(sel_data.m_selectionBoxLimiter);
 
 	const std::int32_t v_scroll_val = InputManager::GetMouseScrollDelta();
 	if (v_scroll_val != 0)
 	{
-		const std::uint32_t v_limiter_idx = std::abs(sel_data.m_selectionBoxLimiter.x)
-			+ std::abs(sel_data.m_selectionBoxLimiter.y) * 2
-			+ std::abs(sel_data.m_selectionBoxLimiter.z) * 3;
-
 		const std::int32_t v_scroll_add = std::abs(v_scroll_val) / 130;
 		const std::int32_t v_normalized_scroll = (v_scroll_val > 0)
 			? (1 + v_scroll_add) : (-1 - v_scroll_add);
@@ -202,15 +206,17 @@ void BetterPaintTool::updateSelectionData(PaintToolSelectionData& sel_data)
 
 			std::int32_t* v_max_arr = reinterpret_cast<std::int32_t*>(&sel_data.m_selectionBoxMax);
 			std::int32_t* v_min_arr = reinterpret_cast<std::int32_t*>(&sel_data.m_selectionBoxMin);
+			std::int32_t* v_lim_arr = reinterpret_cast<std::int32_t*>(&sel_data.m_selectionBoxLimiter);
 
 			const std::int32_t v_max_val = v_max_arr[v_actual_idx];
 			const std::int32_t v_min_val = v_min_arr[v_actual_idx];
 			const std::int32_t v_dist_to_lim1 = std::abs((v_max_val + v_limiter_size) - v_min_val);
 			const std::int32_t v_dist_to_lim2 = std::abs((v_max_val - v_limiter_size) - v_min_val);
 
-			const std::uint32_t v_fixed_adder = (v_normalized_scroll > 0)
-				? std::min(v_normalized_scroll, v_dist_to_lim1)
-				: std::max(v_normalized_scroll, -v_dist_to_lim2);
+			const std::int32_t v_mul_scroll = v_normalized_scroll * v_lim_arr[v_actual_idx];
+			const std::int32_t v_fixed_adder = (v_mul_scroll > 0)
+				? std::min(v_mul_scroll, v_dist_to_lim1)
+				: std::max(v_mul_scroll, -v_dist_to_lim2);
 
 			v_min_arr[v_limiter_idx - 1] += v_fixed_adder;
 		}
@@ -225,19 +231,38 @@ void BetterPaintTool::updateSelectionData(PaintToolSelectionData& sel_data)
 	DirectX::XMINT3 v_bBoxSizeInt;
 	DirectX::XMStoreSInt3(&v_bBoxSizeInt, v_bBoxResult);
 
-	char v_text_buffer[0x100];
-	char v_text_buffer2[0x100];
-	const int v_buff_sz = sprintf_s(v_text_buffer, "<p textShadow='false' bg='gui_keybinds_bg_orange' color='#66440C' spacing='7'>Selection size: %ix%ix%i</p>",
-		v_bBoxSizeInt.x, v_bBoxSizeInt.y, v_bBoxSizeInt.z);
-	const int v_buff_sz2 = sprintf_s(v_text_buffer2, "Limiter: %i, %i, %i",
-		sel_data.m_selectionBoxLimiter.x, sel_data.m_selectionBoxLimiter.y, sel_data.m_selectionBoxLimiter.z);
+	//To show the X and Y size properly
+	switch (v_limiter_idx)
+	{
+	case 1:
+		std::swap(v_bBoxSizeInt.x, v_bBoxSizeInt.y);
+	case 2:
+		std::swap(v_bBoxSizeInt.y, v_bBoxSizeInt.z);
+		break;
+	default:
+		break;
+	}
 
-	InGameGuiManager::SetInteractionText({ std::string(v_text_buffer, v_buff_sz), std::string(v_text_buffer2, v_buff_sz2) });
+	char v_text_buffer[0x100];
+	const int v_buff_sz = sprintf_s(v_text_buffer, "<p textShadow='false' bg='gui_keybinds_bg' color='#ffffff' spacing='7'>Selection size: %ix%ix%i</p>",
+		v_bBoxSizeInt.x, v_bBoxSizeInt.y, v_bBoxSizeInt.z);
+	
+	InGameGuiManager::SetInteractionText({ std::string(v_text_buffer, v_buff_sz), "" });
+	InGameGuiManager::SetInteractionText({
+		"<img bg='gui_keybinds_bg' spacing='0'>icon_keybinds_scroll_up.png</img>",
+		"<p textShadow='true' bg='gui_keybinds_bg' color='#ffffff' spacing='15'>To adjust selection depth</p>"
+	});
 }
 
-bool BetterPaintTool::isObjectSelected(const PaintToolSelectionData& sel_data) const
+bool BetterPaintTool::isObjectSelected(const PaintToolSelectionData& sel_data)
 {
 	return sel_data.m_objectId != -1 && sel_data.m_objectType > 0;
+}
+
+bool BetterPaintTool::isErasingOrPainting() const
+{
+	return this->isObjectSelected(m_paintSelection)
+		|| this->isObjectSelected(m_eraseSelection);
 }
 
 Color BetterPaintTool::getInterpolatedColor()

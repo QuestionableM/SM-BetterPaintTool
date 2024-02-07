@@ -40,8 +40,8 @@ void process_attach()
 	if (DEFINE_HOOK(0x3EE6D0, BetterPaintTool::h_update, BetterPaintTool::o_update) != MH_OK)
 		return;
 
-	StaticValues::sm_paintToolPaintLimiter = 64;
-	StaticValues::sm_paintToolEraseLimiter = 64;
+	StaticValues::sm_paintToolPaintLimiter = 63;
+	StaticValues::sm_paintToolEraseLimiter = 63;
 
 	ms_mhHooksAttached = MH_EnableHook(MH_ALL_HOOKS) == MH_OK;
 }

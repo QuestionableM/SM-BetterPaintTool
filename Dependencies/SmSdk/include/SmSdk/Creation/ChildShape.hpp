@@ -12,15 +12,16 @@ class ChildShape : public NetObj
 public:
 	inline Color getColor() const
 	{
-		return shape->shape_color;
+		return shape->m_shapeColor;
 	}
 
+	//SERVER ONLY
 	inline void setColor(Color new_color)
 	{
-		if (shape->shape_color == new_color)
+		if (shape->m_shapeColor == new_color)
 			return;
 
-		shape->shape_color = new_color;
+		shape->m_shapeColor = new_color;
 		this->update_object();
 	}
 

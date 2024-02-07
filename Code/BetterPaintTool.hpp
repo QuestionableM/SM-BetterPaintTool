@@ -24,8 +24,10 @@ public:
 	static bool h_initialize(BetterPaintTool* self);
 	static void h_update(BetterPaintTool* self, float dt);
 
+	static std::uint32_t getLimiterAxisIndex(const DirectX::XMINT3& limiter);
 	void updateSelectionData(PaintToolSelectionData& sel_data);
-	bool isObjectSelected(const PaintToolSelectionData& sel_data) const;
+	static bool isObjectSelected(const PaintToolSelectionData& sel_data);
+	bool isErasingOrPainting() const;
 
 	//Color that depends on time_since_last_change
 	Color getInterpolatedColor();
