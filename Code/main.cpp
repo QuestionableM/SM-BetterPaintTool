@@ -28,6 +28,9 @@ void process_attach()
 	//Do the hooking here
 	const std::uintptr_t v_mod_base = std::uintptr_t(GetModuleHandle(NULL));
 
+	if (DEFINE_HOOK(0x54B8F0, BetterPaintTool::h_processInputs, BetterPaintTool::o_processInputs) != MH_OK)
+		return;
+
 	if (DEFINE_HOOK(0x3CE3F0, BetterPaintToolGui::h_initialize, BetterPaintToolGui::o_initialize) != MH_OK)
 		return;
 
