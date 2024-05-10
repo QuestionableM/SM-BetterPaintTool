@@ -124,6 +124,10 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 	if (!self->is_equipped())
 		return;
 
+	MyPlayer* v_pPlayer = MyPlayer::GetInstance();
+	if (self->tool->owner_id != v_pPlayer->player->id)
+		return;
+
 	self->updateSelectionData(self->m_paintSelection);
 	self->updateSelectionData(self->m_eraseSelection);
 
@@ -132,12 +136,9 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 		Physics* v_pPhysics = Physics::GetInstance();
 		if (!v_pPhysics) return;
 
-		PhysicsBase* v_pPhysBase = v_pPhysics->physics_base;
-		if (!v_pPhysBase->collision_world2) return;
+		btCollisionWorld* v_pCollWorld = v_pPhysics->physics_base->collision_world2;
+		if (!v_pCollWorld) return;
 
-		btCollisionWorld* v_pCollWorld = v_pPhysBase->collision_world2;
-
-		MyPlayer* v_pPlayer = MyPlayer::GetInstance();
 		const btVector3 v_ray_start(v_pPlayer->camera.position.x,
 			v_pPlayer->camera.position.y, v_pPlayer->camera.position.z);
 		const btVector3 v_direction(v_pPlayer->camera.direction.x,
