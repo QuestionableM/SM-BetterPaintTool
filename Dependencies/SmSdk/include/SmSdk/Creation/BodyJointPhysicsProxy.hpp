@@ -1,8 +1,7 @@
 #pragma once
 
 #include "SmSdk/Physics/PhysicsProxy.hpp"
-
-#include <BulletCollision/CollisionShapes/btCompoundShape.h>
+#include "SmSdk/bullet_include.hpp"
 
 class BodyJointPhysicsProxy : public PhysicsProxy
 {

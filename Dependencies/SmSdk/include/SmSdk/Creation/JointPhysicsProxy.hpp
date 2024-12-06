@@ -1,8 +1,7 @@
 #pragma once
 
 #include "SmSdk/Physics/PhysicsProxy.hpp"
-
-#include <BulletDynamics/ConstraintSolver/btHingeConstraint.h>
+#include "SmSdk/bullet_include.hpp"
 
 struct JointPhysicsProxy : public PhysicsProxy
 {

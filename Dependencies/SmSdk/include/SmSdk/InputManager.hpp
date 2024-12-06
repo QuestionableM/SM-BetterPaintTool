@@ -2,6 +2,9 @@
 
 #include "SmSdk/config.hpp"
 
+#include <string>
+#include <deque>
+
 enum EKeyState : std::uint32_t
 {
 	None = 0,

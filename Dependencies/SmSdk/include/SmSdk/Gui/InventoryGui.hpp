@@ -1,7 +1,7 @@
 #pragma once
 
+#include "SmSdk/mygui_include.hpp"
 #include "GuiBase.hpp"
-#include "MyGUI.h"
 
 struct InventoryGui : public GuiBase
 {

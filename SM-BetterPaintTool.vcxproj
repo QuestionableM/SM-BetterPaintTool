@@ -166,6 +166,7 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Player.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\PlayerManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\StaticValues.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\TimestampCheck.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\ClientTool.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\PaintTool.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\Color.hpp" />

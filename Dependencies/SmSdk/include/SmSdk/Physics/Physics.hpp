@@ -1,13 +1,7 @@
 #pragma once
 
-#include "SmSdk/config.hpp"
-
-#if defined(SMSDK_ENABLE_PHYSICS)
-
+#include "SmSdk/bullet_include.hpp"
 #include "SmSdk/Base/Task.hpp"
-
-#include <BulletCollision/BroadphaseCollision/btOverlappingPairCache.h>
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 struct PhysicsBase : public Task
 {
@@ -72,5 +66,3 @@ public:
 }; // Size: 0x30
 
 static_assert(sizeof(Physics) == 0x30, "Physics: Incorrect Size");
-
-#endif

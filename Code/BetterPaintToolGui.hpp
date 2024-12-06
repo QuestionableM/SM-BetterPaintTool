@@ -64,7 +64,7 @@ public:
 	//Create functions
 	void createTextureGradient();
 	void createHueGradient();
-	void initialize();
+	void initializeHooked();
 	void initParams(BetterPaintTool* paint_tool);
 
 	static t_init_func_sig o_initialize;

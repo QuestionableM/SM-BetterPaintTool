@@ -194,5 +194,8 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\InGameGuiManagerInterface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\TimestampCheck.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

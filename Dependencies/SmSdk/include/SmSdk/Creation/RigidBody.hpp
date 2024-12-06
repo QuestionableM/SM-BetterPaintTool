@@ -1,10 +1,10 @@
 #pragma once
 
+#include "SmSdk/bullet_include.hpp"
 #include "SmSdk/Base/NetObj.hpp"
+
 #include "ChildShape.hpp"
 #include "Joint.hpp"
-
-#include <BulletCollision/CollisionShapes/btCompoundShape.h>
 
 #include <unordered_set>
 #include <vector>
@@ -12,12 +12,12 @@
 class RigidBody : public NetObj
 {
 public:
-	inline ChildShape* getChildShape(int id)
+	inline ChildShape* getChildShape(int child_id)
 	{
-		if (id < 0 || id >= m_vecChildShapes.size())
+		if (child_id < 0 || child_id >= m_vecChildShapes.size())
 			return nullptr;
 
-		return m_vecChildShapes[id].get();
+		return m_vecChildShapes[child_id].get();
 	}
 
 private:

@@ -95,7 +95,7 @@ std::uint32_t RatioToRGB(double ratio)
     const int region = normalized / 256;
 
     //find the distance to the start of the closest region
-    const int x = normalized % 256;
+    const std::uint8_t x = std::uint8_t(normalized % 256);
 
     std::uint8_t r = 0, g = 0, b = 0;
     switch (region)

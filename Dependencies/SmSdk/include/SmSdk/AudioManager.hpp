@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SmSdk/fmod_include.hpp"
 #include "SmSdk/Base/Task.hpp"
 
 #include <memory>
@@ -7,23 +8,6 @@
 #include <mutex>
 #include <deque>
 #include <map>
-
-namespace FMOD
-{
-	namespace Studio
-	{
-		class System {};
-	}
-
-	class System {};
-}
-
-struct FMOD_ADVANCEDSETTINGS
-{
-	char data[0x68];
-}; // Size: 0x68
-
-static_assert(sizeof(FMOD_ADVANCEDSETTINGS) == 0x68, "FMOD_ADVANCEDSETTINGS: Incorrect Size");
 
 struct EventData
 {

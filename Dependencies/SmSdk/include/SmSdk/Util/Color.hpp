@@ -5,6 +5,9 @@
 
 union Color;
 
+#pragma warning(push)
+#pragma warning(disable : 4201)
+
 union ColorBGRA
 {
 	std::uint32_t data;
@@ -34,6 +37,8 @@ union Color
 		return this->data == other.data;
 	}
 };
+
+#pragma warning(pop)
 
 void RGBtoHSV(Color col, float& fH, float& fS, float& fV);
 std::uint32_t RatioToRGB(double ratio);

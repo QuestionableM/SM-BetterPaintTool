@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Character.hpp"
+#include "SmSdk/boost_include.hpp"
 #include "SmSdk/config.hpp"
 
-#include <boost/uuid/uuid.hpp>
+#include "SmSdk/Character.hpp"
 
 #include <unordered_map>
 #include <vector>

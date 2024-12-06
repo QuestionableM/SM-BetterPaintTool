@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include <boost/uuid/uuid.hpp>
+#include "SmSdk/boost_include.hpp"
 #include <DirectXMath.h>
 
 struct PlayerGarments
@@ -46,9 +46,14 @@ struct PlayerScriptData
 
 static_assert(sizeof(PlayerScriptData) == 0x8, "PlayerScriptData: Incorrect Size");
 
+class Character;
+
 class Player
 {
 public:
+	Character* getCharacter() const;
+	bool characterExists() const;
+
 	/* 0x0000 */ std::shared_ptr<Player> self_ptr;
 	/* 0x0010 */ __int32 id;
 	/* 0x0014 */ __int32 character_id;
@@ -68,6 +73,7 @@ public:
 	/* 0x0138 */ __int32 script_ref;
 	/* 0x013C */ PlayerScriptData script_data;
 	/* 0x0144 */ char pad_0x144[0xC];
+
 }; // Size: 0x150
 
 static_assert(sizeof(Player) == 0x150, "Player: Incorrect Size");

@@ -31,7 +31,7 @@ public:
 	__int32 m_currentIdx; //0x0070 
 	char pad_0x0074[0xC]; //0x0074
 	std::shared_ptr<RigidBody> parent_body; //0x0080 
-	std::shared_ptr<struct ControllerBase> controller; //0x0090 
+	std::shared_ptr<class ControllerBase> controller; //0x0090 
 	char pad_0x00A0[0x30]; //0x00A0
 
 }; //Size=0x00D0

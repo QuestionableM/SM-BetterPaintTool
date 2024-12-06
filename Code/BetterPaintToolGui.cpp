@@ -180,9 +180,9 @@ void BetterPaintToolGui::getSliderData(MyGUI::Widget* slider_parent, SliderData*
 Color BetterPaintToolGui::getColorFromSliders()
 {
 	Color v_color;
-	v_color.r = std::uint8_t(m_pWidget->findWidget("ScrollR")->findWidget("Slider")->castType<MyGUI::ScrollBar>()->getScrollPosition());
-	v_color.g = std::uint8_t(m_pWidget->findWidget("ScrollG")->findWidget("Slider")->castType<MyGUI::ScrollBar>()->getScrollPosition());
-	v_color.b = std::uint8_t(m_pWidget->findWidget("ScrollB")->findWidget("Slider")->castType<MyGUI::ScrollBar>()->getScrollPosition());
+	v_color.r = std::uint8_t(m_pMainPanel->findWidget("ScrollR")->findWidget("Slider")->castType<MyGUI::ScrollBar>()->getScrollPosition());
+	v_color.g = std::uint8_t(m_pMainPanel->findWidget("ScrollG")->findWidget("Slider")->castType<MyGUI::ScrollBar>()->getScrollPosition());
+	v_color.b = std::uint8_t(m_pMainPanel->findWidget("ScrollB")->findWidget("Slider")->castType<MyGUI::ScrollBar>()->getScrollPosition());
 	v_color.a = 0xff;
 
 	return v_color;
@@ -211,47 +211,47 @@ Color BetterPaintToolGui::getColorPickerColorTransformed(float uv_x, float uv_y,
 
 MyGUI::Widget* BetterPaintToolGui::getPresetColorsWnd()
 {
-	return m_pWidget->findWidget("PresetColorsWnd");
+	return m_pMainPanel->findWidget("PresetColorsWnd");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getPresetColorsTab()
 {
-	return m_pWidget->findWidget("PresetColorsTab");
+	return m_pMainPanel->findWidget("PresetColorsTab");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getCustomColorWnd()
 {
-	return m_pWidget->findWidget("CustomColorWnd");
+	return m_pMainPanel->findWidget("CustomColorWnd");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getCustomColorTab()
 {
-	return m_pWidget->findWidget("CustomColorTab");
+	return m_pMainPanel->findWidget("CustomColorTab");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getColorPicker()
 {
-	return m_pWidget->findWidget("ColorPicker");
+	return m_pMainPanel->findWidget("ColorPicker");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getColorPickerPointer()
 {
-	return m_pWidget->findWidget("ColorPickerPointer");
+	return m_pMainPanel->findWidget("ColorPickerPointer");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getHsvPicker()
 {
-	return m_pWidget->findWidget("HsvPicker");
+	return m_pMainPanel->findWidget("HsvPicker");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getHsvPickerPointer()
 {
-	return m_pWidget->findWidget("HsvPickerPointer");
+	return m_pMainPanel->findWidget("HsvPickerPointer");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getHexInputBox()
 {
-	return m_pWidget->findWidget("HexInput");
+	return m_pMainPanel->findWidget("HexInput");
 }
 
 void BetterPaintToolGui::setupColorSlider(
@@ -259,7 +259,7 @@ void BetterPaintToolGui::setupColorSlider(
 	const std::string& visual_name,
 	t_scroll_callback_sig callback)
 {
-	MyGUI::Widget* v_pSliderHolder = m_pWidget->findWidget(widget_name);
+	MyGUI::Widget* v_pSliderHolder = m_pMainPanel->findWidget(widget_name);
 	MyGUI::Singleton<MyGUI::LayoutManager>::getInstancePtr()->loadLayout("$GAME_DATA/Gui/Layouts/Options/OptionsItem_Slider.layout", "", v_pSliderHolder);
 
 	SliderData v_slider;
@@ -278,7 +278,7 @@ void BetterPaintToolGui::setupColorSlider(
 void BetterPaintToolGui::updateColorSlider(const std::string& widget_name)
 {
 	SliderData v_slider;
-	this->getSliderData(m_pWidget->findWidget(widget_name), &v_slider);
+	this->getSliderData(m_pMainPanel->findWidget(widget_name), &v_slider);
 
 	const std::size_t v_pos = v_slider.slider->getScrollPosition();
 	v_slider.value->setCaption(std::to_string(v_pos));
@@ -291,7 +291,7 @@ void BetterPaintToolGui::updateColorSlider(const std::string& widget_name)
 
 void BetterPaintToolGui::setColorSliderPos(const std::string& widget_name, std::size_t value)
 {
-	MyGUI::Widget* v_pHolder = m_pWidget->findWidget(widget_name);
+	MyGUI::Widget* v_pHolder = m_pMainPanel->findWidget(widget_name);
 
 	v_pHolder->findWidget("Slider")->castType<MyGUI::ScrollBar>()->setScrollPosition(value);
 	v_pHolder->findWidget("Value")->castType<MyGUI::TextBox>()->setCaption(std::to_string(value));
@@ -418,14 +418,14 @@ void BetterPaintToolGui::createHueGradient()
 	v_pTex->unlock();
 }
 
-void BetterPaintToolGui::initialize()
+void BetterPaintToolGui::initializeHooked()
 {
 	MyGUI::Gui* v_pGui = MyGUI::Singleton<MyGUI::Gui>::getInstancePtr();
 	MyGUI::LayoutManager* v_pLayoutManager = MyGUI::Singleton<MyGUI::LayoutManager>::getInstancePtr();
 	GuiSystemManager* v_pGuiSysMgr = GuiSystemManager::GetInstance();
 	const MyGUI::IntCoord& v_inventory_pos = InGameGuiManager::GetInstance()->m_pInventory->pos;
 
-	m_pWidget = v_pGui->createWidget<MyGUI::Widget>(
+	m_pMainPanel = v_pGui->createWidget<MyGUI::Widget>(
 		"PanelEmpty",
 		MyGUI::IntCoord(
 			v_pGuiSysMgr->screen_left, v_pGuiSysMgr->screen_top,
@@ -434,14 +434,14 @@ void BetterPaintToolGui::initialize()
 		"Back",
 		"PaintTool");
 
-	m_pWidget->setNeedKeyFocus(false);
+	m_pMainPanel->setNeedKeyFocus(false);
 
 	CustomPaintToolGui::writeIfNotExists();
-	v_pLayoutManager->loadLayout(CustomPaintToolGui::CustomLayoutPath, "", m_pWidget);
+	v_pLayoutManager->loadLayout(CustomPaintToolGui::CustomLayoutPath, "", m_pMainPanel);
 
-	MyGUI::Widget* v_pMainPanel = m_pWidget->findWidget("MainPanel");
-	m_pWidget->setSize(v_pMainPanel->getSize());
-	m_pWidget->setPosition(
+	MyGUI::Widget* v_pMainPanel = m_pMainPanel->findWidget("MainPanel");
+	m_pMainPanel->setSize(v_pMainPanel->getSize());
+	m_pMainPanel->setPosition(
 		(v_inventory_pos.width - v_pMainPanel->getCoord().width) / 2,
 		(v_inventory_pos.height - v_pMainPanel->getCoord().height) / 2);
 
@@ -513,7 +513,7 @@ void BetterPaintToolGui::initialize()
 	m_pItemBox->requestDrawItem = MyGUI::newDelegate(this, &BetterPaintToolGui::requestDrawItem);
 	m_pItemBox->eventMouseItemActivate += MyGUI::newDelegate(this, &BetterPaintToolGui::eventMouseItemActivate);
 
-	m_pWidget->setVisible(false);
+	m_pMainPanel->setVisible(false);
 
 	if (m_pGuiInterface)
 		m_pGuiInterface->func7("InitFunc", "");
@@ -532,7 +532,7 @@ void BetterPaintToolGui::initParams(BetterPaintTool* paint_tool)
 
 void BetterPaintToolGui::h_initialize(BetterPaintToolGui* self)
 {
-	self->initialize();
+	self->initializeHooked();
 }
 
 bool BetterPaintToolGui::isColorPreset(Color col)

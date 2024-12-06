@@ -1,8 +1,8 @@
 #pragma once
 
+#include "SmSdk/boost_include.hpp"
 #include "SmSdk/Base/NetObj.hpp"
 
-#include <boost/uuid/uuid.hpp>
 #include <DirectXMath.h>
 
 struct Harvestable : public NetObj

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <BulletDynamics/Dynamics/btRigidBody.h>
+#include "SmSdk/bullet_include.hpp"
 
 enum PhysicsProxyType : unsigned char
 {

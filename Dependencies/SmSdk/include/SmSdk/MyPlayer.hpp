@@ -1,12 +1,12 @@
 #pragma once
 
+#include "SmSdk/boost_include.hpp"
 #include "SmSdk/config.hpp"
 
 #include "SmSdk/Base/Aligned16Base.hpp"
 #include "SmSdk/Base/InputTarget.hpp"
-#include "Player.hpp"
+#include "SmSdk/Player.hpp"
 
-#include <boost/uuid/uuid.hpp>
 #include <DirectXMath.h>
 
 #include <memory>
