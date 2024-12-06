@@ -3,7 +3,7 @@
   <img src="https://github.com/QuestionableM/SM-BetterPaintTool/blob/main/Images/GuiPreview.png?raw=true" alt="Sublime's custom image"/>
 </p>
 A DLL mod for Scrap Mechanic which enhances the functionality of the vanilla Paint Tool and allows you to pick any color you want!<br/>
-Supported game version: 0.6.6.729
+Supported game version: 0.6.6.729 (v1.5), and 0.7.0.771 (v1.6)
 <br/><br/>
 
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/QuestionableM/SM-BetterPaintTool/total)
