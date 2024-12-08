@@ -24,7 +24,7 @@ struct CharacterScriptData
 
 static_assert(sizeof(CharacterScriptData) == 0x8, "CharacterScriptData: Incorrect Size");
 
-#if defined(_SM_VERSION_070_771)
+#if _SM_VERSION_NUM >= 070771
 struct CharacterControllerData
 {
 	/* 0x0000 */ float m_fWalkSpeed;

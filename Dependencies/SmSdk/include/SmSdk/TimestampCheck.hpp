@@ -3,6 +3,7 @@
 #include "SmSdk/win_include.hpp"
 
 #define _SM_TIMESTAMP_070_771 1733399248
+#define _SM_TIMESTAMP_071_772 1733491522
 
 namespace SmSdk
 {

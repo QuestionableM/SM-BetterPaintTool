@@ -1,7 +1,8 @@
 #include "SmSdk/StaticValues.hpp"
 #include "Utils/Console.hpp"
 
-#include "SmSdk/TimestampCheck.hpp"
+#include <SmSdk/TimestampCheck.hpp>
+#include <SmSdk/offsets.hpp>
 
 #include "BetterPaintToolGui.hpp"
 #include "BetterPaintTool.hpp"
@@ -15,15 +16,32 @@ static bool ms_mhHooksAttached = false;
 #define DEFINE_HOOK(address, detour, original) \
 	MH_CreateHook((LPVOID)(v_mod_base + address), (LPVOID)detour, (LPVOID*)&original)
 
+#if _SM_VERSION_NUM == 071772
+#	define BPT_PROCESS_INPUTS_FUNC 0x53BD60
+#	define BPT_GUI_INITIALIZE_FUNC 0x3C07E0
+#	define BPT_INITIALIZE_FUNC 0x3DF930
+#	define BPT_UPDATE_FUNC 0x3DEE60
+#elif _SM_VERSION_NUM == 070771
+#	define BPT_PROCESS_INPUTS_FUNC 0x53BD60
+#	define BPT_GUI_INITIALIZE_FUNC 0x3C07E0
+#	define BPT_INITIALIZE_FUNC 0x3DF930
+#	define BPT_UPDATE_FUNC 0x3DEE60
+#else
+#	define BPT_PROCESS_INPUTS_FUNC 0x54B8F0
+#	define BPT_GUI_INITIALIZE_FUNC 0x3CE3F0
+#	define BPT_INITIALIZE_FUNC 0x3EF190
+#	define BPT_UPDATE_FUNC 0x3EE6D0
+#endif
+
 void process_attach()
 {
 	AttachDebugConsole();
 
-	if (!SmSdk::CheckTimestamp(_SM_TIMESTAMP_070_771))
+	if (!SmSdk::CheckTimestamp(_SM_TIMESTAMP_071_772))
 	{
 		MessageBoxA(
 			NULL,
-			"Your game version is unsupposed by Better Paint Tool. The current version of the mod has been built for Scrap Mechanic 0.7.0.771",
+			"Your game version is not supported by Better Paint Tool. The current version of the mod has been built for Scrap Mechanic 0.7.1.772\n\nPress OK to continue loading without the mod.",
 			"Unsupported Version",
 			MB_ICONWARNING);
 		return;
@@ -39,18 +57,10 @@ void process_attach()
 
 	//Do the hooking here
 	const std::uintptr_t v_mod_base = std::uintptr_t(GetModuleHandle(NULL));
-
-#if defined(_SM_VERSION_070_771)
-	if (DEFINE_HOOK(0x53BD60, BetterPaintTool::h_processInputs, BetterPaintTool::o_processInputs) != MH_OK) return;
-	if (DEFINE_HOOK(0x3C07E0, BetterPaintToolGui::h_initialize, BetterPaintToolGui::o_initialize) != MH_OK) return;
-	if (DEFINE_HOOK(0x3DF930, BetterPaintTool::h_initialize, BetterPaintTool::o_initialize) != MH_OK) return;
-	if (DEFINE_HOOK(0x3DEE60, BetterPaintTool::h_update, BetterPaintTool::o_update) != MH_OK) return;
-#else
-	if (DEFINE_HOOK(0x54B8F0, BetterPaintTool::h_processInputs, BetterPaintTool::o_processInputs) != MH_OK) return;
-	if (DEFINE_HOOK(0x3CE3F0, BetterPaintToolGui::h_initialize, BetterPaintToolGui::o_initialize) != MH_OK) return;
-	if (DEFINE_HOOK(0x3EF190, BetterPaintTool::h_initialize, BetterPaintTool::o_initialize) != MH_OK) return;
-	if (DEFINE_HOOK(0x3EE6D0, BetterPaintTool::h_update, BetterPaintTool::o_update) != MH_OK) return;
-#endif
+	if (DEFINE_HOOK(BPT_PROCESS_INPUTS_FUNC, BetterPaintTool::h_processInputs, BetterPaintTool::o_processInputs) != MH_OK) return;
+	if (DEFINE_HOOK(BPT_GUI_INITIALIZE_FUNC, BetterPaintToolGui::h_initialize, BetterPaintToolGui::o_initialize) != MH_OK) return;
+	if (DEFINE_HOOK(BPT_INITIALIZE_FUNC, BetterPaintTool::h_initialize, BetterPaintTool::o_initialize) != MH_OK) return;
+	if (DEFINE_HOOK(BPT_UPDATE_FUNC, BetterPaintTool::h_update, BetterPaintTool::o_update) != MH_OK) return;
 
 	StaticValues::sm_paintToolPaintLimiter = 63;
 	StaticValues::sm_paintToolEraseLimiter = 63;
