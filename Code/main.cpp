@@ -16,7 +16,12 @@ static bool ms_mhHooksAttached = false;
 #define DEFINE_HOOK(address, detour, original) \
 	MH_CreateHook((LPVOID)(v_mod_base + address), (LPVOID)detour, (LPVOID*)&original)
 
-#if _SM_VERSION_NUM == 071772
+#if _SM_VERSION_NUM == 072775
+#	define BPT_PROCESS_INPUTS_FUNC 0x53BD80
+#	define BPT_GUI_INITIALIZE_FUNC 0x3C0800
+#	define BPT_INITIALIZE_FUNC 0x3DF950
+#	define BPT_UPDATE_FUNC 0x3DEE80
+#elif _SM_VERSION_NUM == 071772
 #	define BPT_PROCESS_INPUTS_FUNC 0x53BD60
 #	define BPT_GUI_INITIALIZE_FUNC 0x3C07E0
 #	define BPT_INITIALIZE_FUNC 0x3DF930
@@ -37,11 +42,11 @@ void process_attach()
 {
 	AttachDebugConsole();
 
-	if (!SmSdk::CheckTimestamp(_SM_TIMESTAMP_071_772))
+	if (!SmSdk::CheckTimestamp(_SM_TIMESTAMP_072_775))
 	{
 		MessageBoxA(
 			NULL,
-			"Your game version is not supported by Better Paint Tool. The current version of the mod has been built for Scrap Mechanic 0.7.1.772\n\nPress OK to continue loading without the mod.",
+			"Your game version is not supported by Better Paint Tool. The current version of the mod has been built for Scrap Mechanic 0.7.2.775\n\nPress OK to continue loading without the mod.",
 			"Unsupported Version",
 			MB_ICONWARNING);
 		return;
