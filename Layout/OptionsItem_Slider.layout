@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="TextBox" skin="TextBox" name="Name" position_real="0 0 0.350877 1">
+        <Property key="Caption" value="LABEL" />
+        <Property key="FontName" value="SM_TextLabel" />
+        <Property key="TextAlign" value="Left VCenter" />
+        <Property key="NeedMouse" value="false" />
+    </Widget>
+    <Widget type="Widget" skin="WhiteSkin" name="Line" position_real="0 1 0.991228 0.025">
+        <Property key="Alpha" value="0.05" />
+        <Property key="NeedMouse" value="false" />
+        <Property key="NeedKey" value="false" />
+    </Widget>
+    <Widget type="ScrollBar" skin="InventoryHSlider" name="Slider" position_real="0.412281 0.25 0.587719 0.45">
+        <Property key="Range" value="101" />
+    </Widget>
+    <Widget type="EditBox" skin="EditBoxEmpty" name="Value" position_real="0.223684 0.25 0.175439 0.5">
+        <Property key="FontName" value="SM_ListItem" />
+        <Property key="Caption" value="-1234567890" />
+        <Property key="TextAlign" value="Right VCenter" />
+        <Property key="NeedKey" value="true" />
+        <Property key="NeedMouse" value="true" />
+        <Property key="TextColour" value="1 0.831373 0.290196" />
+    </Widget>
+    <CodeGeneratorSettings />
+</MyGUI>

@@ -5,10 +5,11 @@
 #include <fstream>
 
 std::string CustomPaintToolGui::CustomLayoutPath = "$GAME_DATA/Gui/Layouts/Tool/Tool_PaintTool_DLL_Injected.layout";
+std::string CustomPaintToolGui::CustomLayoutSliderPath = "$GAME_DATA/Gui/Layouts/Tool/Tool_PaintTool_Slider_DLL_Injected.layout";
 
 std::string CustomPaintToolGui::getCustomPaintToolGuiString()
 {
-	const char file_data[] =
+	static const char file_data[] =
 		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 		"<MyGUI type=\"Layout\" version=\"3.2.0\">"
 		"\t<Widget type=\"Widget\" skin=\"PanelEmpty\" name=\"MainPanel\" position_real=\"0 0 0.3125 0.36944444444444446\">"
@@ -93,6 +94,39 @@ std::string CustomPaintToolGui::getCustomPaintToolGuiString()
 	return std::string(file_data, sizeof(file_data) - 1);
 }
 
+std::string CustomPaintToolGui::getCustomPaintToolSliderGuiString()
+{
+	static const char v_fileData[] =
+		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+		"<MyGUI type=\"Layout\" version=\"3.2.0\">"
+		"\t<Widget type=\"TextBox\" skin=\"TextBox\" name=\"Name\" position_real=\"0 0 0.350877 1\">"
+		"\t\t<Property key=\"Caption\" value=\"LABEL\" />"
+		"\t\t<Property key=\"FontName\" value=\"SM_TextLabel\" />"
+		"\t\t<Property key=\"TextAlign\" value=\"Left VCenter\" />"
+		"\t\t<Property key=\"NeedMouse\" value=\"false\" />"
+		"\t</Widget>"
+		"\t<Widget type=\"Widget\" skin=\"WhiteSkin\" name=\"Line\" position_real=\"0 1 0.991228 0.025\">"
+		"\t\t<Property key=\"Alpha\" value=\"0.05\" />"
+		"\t\t<Property key=\"NeedMouse\" value=\"false\" />"
+		"\t\t<Property key=\"NeedKey\" value=\"false\" />"
+		"\t</Widget>"
+		"\t<Widget type=\"ScrollBar\" skin=\"InventoryHSlider\" name=\"Slider\" position_real=\"0.412281 0.25 0.587719 0.45\">"
+		"\t\t<Property key=\"Range\" value=\"101\" />"
+		"\t</Widget>"
+		"\t<Widget type=\"EditBox\" skin=\"EditBoxEmpty\" name=\"Value\" position_real=\"0.223684 0.25 0.175439 0.5\">"
+		"\t\t<Property key=\"FontName\" value=\"SM_ListItem\" />"
+		"\t\t<Property key=\"Caption\" value=\"-1234567890\" />"
+		"\t\t<Property key=\"TextAlign\" value=\"Right VCenter\" />"
+		"\t\t<Property key=\"NeedKey\" value=\"true\" />"
+		"\t\t<Property key=\"NeedMouse\" value=\"true\" />"
+		"\t\t<Property key=\"TextColour\" value=\"1 0.831373 0.290196\" />"
+		"\t</Widget>"
+		"\t<CodeGeneratorSettings />"
+		"</MyGUI>";
+
+	return std::string(v_fileData, sizeof(v_fileData) - 1);
+}
+
 bool file_exists(const std::string& path)
 {
 	std::string v_replaced_path = path;
@@ -118,8 +152,9 @@ void write_string_to_file(const std::string& path, const std::string& data)
 
 void CustomPaintToolGui::writeIfNotExists()
 {
-	if (file_exists(CustomPaintToolGui::CustomLayoutPath))
-		return;
+	if (!file_exists(CustomPaintToolGui::CustomLayoutPath))
+		write_string_to_file(CustomPaintToolGui::CustomLayoutPath, CustomPaintToolGui::getCustomPaintToolGuiString());
 
-	write_string_to_file(CustomPaintToolGui::CustomLayoutPath, CustomPaintToolGui::getCustomPaintToolGuiString());
+	if (!file_exists(CustomPaintToolGui::CustomLayoutSliderPath))
+		write_string_to_file(CustomPaintToolGui::CustomLayoutSliderPath, CustomPaintToolGui::getCustomPaintToolSliderGuiString());
 }

@@ -143,6 +143,21 @@ void BetterPaintToolGui::colorBScrollChangePosition(MyGUI::ScrollBar* _sender, s
 	this->updateColorSlider("ScrollB");
 }
 
+void BetterPaintToolGui::colorREditTextChanged(MyGUI::EditBox* _sender)
+{
+	this->updateColorSliderFromTextInput("ScrollR");
+}
+
+void BetterPaintToolGui::colorGEditTextChanged(MyGUI::EditBox* _sender)
+{
+	this->updateColorSliderFromTextInput("ScrollG");
+}
+
+void BetterPaintToolGui::colorBEditTextChanged(MyGUI::EditBox* _sender)
+{
+	this->updateColorSliderFromTextInput("ScrollB");
+}
+
 void BetterPaintToolGui::eventPresetColorsTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
 {
 	if (_sender->castType<MyGUI::Button>()->getStateSelected())
@@ -174,7 +189,7 @@ void BetterPaintToolGui::getSliderData(MyGUI::Widget* slider_parent, SliderData*
 {
 	p_sliderData->slider = slider_parent->findWidget("Slider")->castType<MyGUI::ScrollBar>();
 	p_sliderData->name = slider_parent->findWidget("Name")->castType<MyGUI::TextBox>();
-	p_sliderData->value = slider_parent->findWidget("Value")->castType<MyGUI::TextBox>();
+	p_sliderData->value = slider_parent->findWidget("Value")->castType<MyGUI::EditBox>();
 }
 
 Color BetterPaintToolGui::getColorFromSliders()
@@ -257,10 +272,12 @@ MyGUI::Widget* BetterPaintToolGui::getHexInputBox()
 void BetterPaintToolGui::setupColorSlider(
 	const std::string& widget_name,
 	const std::string& visual_name,
-	t_scroll_callback_sig callback)
+	t_scroll_callback_sig callback,
+	t_edit_text_callback_sig edit_text_callback)
 {
 	MyGUI::Widget* v_pSliderHolder = m_pMainPanel->findWidget(widget_name);
-	MyGUI::Singleton<MyGUI::LayoutManager>::getInstancePtr()->loadLayout("$GAME_DATA/Gui/Layouts/Options/OptionsItem_Slider.layout", "", v_pSliderHolder);
+	MyGUI::Singleton<MyGUI::LayoutManager>::getInstancePtr()->loadLayout(
+		"$GAME_DATA/Gui/Layouts/Tool/Tool_PaintTool_Slider_DLL_Injected.layout", "", v_pSliderHolder);
 
 	SliderData v_slider;
 	this->getSliderData(v_pSliderHolder, &v_slider);
@@ -271,8 +288,31 @@ void BetterPaintToolGui::setupColorSlider(
 
 	v_slider.name->setCaption(visual_name);
 	v_slider.value->setCaption("0");
+	v_slider.value->setNeedKeyFocus(true);
+	v_slider.value->setNeedMouseFocus(true);
+	v_slider.value->setMaxTextLength(3);
 
 	v_slider.slider->eventScrollChangePosition += MyGUI::newDelegate(this, callback);
+	v_slider.value->eventEditTextChange += MyGUI::newDelegate(this, edit_text_callback);
+}
+
+void BetterPaintToolGui::updateHexInputAndColorPickersFromSliders()
+{
+	const Color v_sliderColor = this->getColorFromSliders();
+	this->updateHexValueFromColor(v_sliderColor);
+	this->updateHsvAndColorPickersFromColor(v_sliderColor);
+}
+
+void BetterPaintToolGui::updateColorSliderFromTextInput(const std::string& widget_name)
+{
+	SliderData v_slider;
+	this->getSliderData(m_pMainPanel->findWidget(widget_name), &v_slider);
+
+	const std::string& v_textValue = v_slider.value->getCaption().asUTF8();
+	const std::size_t v_scrollPos = std::min<std::size_t>(std::strtoull(v_textValue.c_str(), nullptr, 10), 255);
+	v_slider.slider->setScrollPosition(v_scrollPos);
+
+	this->updateHexInputAndColorPickersFromSliders();
 }
 
 void BetterPaintToolGui::updateColorSlider(const std::string& widget_name)
@@ -283,10 +323,7 @@ void BetterPaintToolGui::updateColorSlider(const std::string& widget_name)
 	const std::size_t v_pos = v_slider.slider->getScrollPosition();
 	v_slider.value->setCaption(std::to_string(v_pos));
 
-	const Color v_slider_color = this->getColorFromSliders();
-
-	this->updateHexValueFromColor(v_slider_color);
-	this->updateHsvAndColorPickersFromColor(v_slider_color);
+	this->updateHexInputAndColorPickersFromSliders();
 }
 
 void BetterPaintToolGui::setColorSliderPos(const std::string& widget_name, std::size_t value)
@@ -447,9 +484,9 @@ void BetterPaintToolGui::initializeHooked()
 
 	{
 		//Setup the scroll bars
-		this->setupColorSlider("ScrollR", "Red", &BetterPaintToolGui::colorRScrollChangePosition);
-		this->setupColorSlider("ScrollG", "Green", &BetterPaintToolGui::colorGScrollChangePosition);
-		this->setupColorSlider("ScrollB", "Blue", &BetterPaintToolGui::colorBScrollChangePosition);
+		this->setupColorSlider("ScrollR", "Red", &BetterPaintToolGui::colorRScrollChangePosition, &BetterPaintToolGui::colorREditTextChanged);
+		this->setupColorSlider("ScrollG", "Green", &BetterPaintToolGui::colorGScrollChangePosition, &BetterPaintToolGui::colorGEditTextChanged);
+		this->setupColorSlider("ScrollB", "Blue", &BetterPaintToolGui::colorBScrollChangePosition, &BetterPaintToolGui::colorBEditTextChanged);
 	}
 
 	{

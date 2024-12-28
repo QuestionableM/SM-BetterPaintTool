@@ -7,7 +7,7 @@ struct SliderData
 {
 	MyGUI::ScrollBar* slider;
 	MyGUI::TextBox* name;
-	MyGUI::TextBox* value;
+	MyGUI::EditBox* value;
 };
 
 class BetterPaintTool;
@@ -17,6 +17,7 @@ class BetterPaintToolGui : public PaintToolGui
 public:
 	using t_init_func_sig = void(*)(BetterPaintToolGui*);
 	using t_scroll_callback_sig = void(BetterPaintToolGui::*)(MyGUI::ScrollBar*, size_t);
+	using t_edit_text_callback_sig = void(BetterPaintToolGui::*)(MyGUI::EditBox*);
 
 	//MYGUI callbacks
 	void requestCoordItem(MyGUI::ItemBox* _sender, MyGUI::IntCoord& _coord, bool _drag);
@@ -29,6 +30,9 @@ public:
 	void colorRScrollChangePosition(MyGUI::ScrollBar* _sender, size_t _position);
 	void colorGScrollChangePosition(MyGUI::ScrollBar* _sender, size_t _position);
 	void colorBScrollChangePosition(MyGUI::ScrollBar* _sender, size_t _position);
+	void colorREditTextChanged(MyGUI::EditBox* _sender);
+	void colorGEditTextChanged(MyGUI::EditBox* _sender);
+	void colorBEditTextChanged(MyGUI::EditBox* _sender);
 	void eventPresetColorsTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
 	void eventCustomColorTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
 
@@ -51,7 +55,13 @@ public:
 	MyGUI::Widget* getHexInputBox();
 
 	//Color slider functions
-	void setupColorSlider(const std::string& widget_name, const std::string& visual_name, t_scroll_callback_sig callback);
+	void setupColorSlider(
+		const std::string& widget_name,
+		const std::string& visual_name,
+		t_scroll_callback_sig callback,
+		t_edit_text_callback_sig edit_text_callback);
+	void updateColorSliderFromTextInput(const std::string& widget_name);
+	void updateHexInputAndColorPickersFromSliders();
 	void updateColorSlider(const std::string& widget_name);
 	void setColorSliderPos(const std::string& widget_name, std::size_t value);
 	
