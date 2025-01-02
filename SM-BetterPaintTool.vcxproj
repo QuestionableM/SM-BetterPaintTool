@@ -195,6 +195,14 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\config.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\Memory.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\StaticVariable.hpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Layout\BetterPaintTool_converted.layout" />
+    <None Include="Layout\OptionsItem_Slider.layout" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

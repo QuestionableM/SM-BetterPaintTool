@@ -39,12 +39,9 @@ void BetterPaintTool::h_processInputs(InputManager* self)
 		for (auto i = self->m_inputQueue.begin(); i != self->m_inputQueue.end();)
 		{
 			if (i->event_type == InputEventType_MouseScroll)
-			{
 				i = self->m_inputQueue.erase(i);
-				continue;
-			}
-
-			i++;
+			else
+				i++;
 		}
 
 		g_isPaintToolHoldingObject = false;

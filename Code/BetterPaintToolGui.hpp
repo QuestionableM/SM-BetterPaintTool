@@ -23,6 +23,7 @@ public:
 	void requestCoordItem(MyGUI::ItemBox* _sender, MyGUI::IntCoord& _coord, bool _drag);
 	void requestCreateWidgetItem(MyGUI::ItemBox* _sender, MyGUI::Widget* _item);
 	void requestDrawItem(MyGUI::ItemBox* _sender, MyGUI::Widget* _item, const MyGUI::IBDrawItemInfo& _info);
+	void pickColorAtIndex(std::size_t idx);
 	void eventMouseItemActivate(MyGUI::ItemBox* _sender, std::size_t idx);
 	void eventEditTextChange(MyGUI::EditBox* _sender);
 	void eventColorMatrixSelectColor(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
@@ -36,11 +37,15 @@ public:
 	void eventPresetColorsTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
 	void eventCustomColorTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
 
+	// Color presets callbacks
+	void eventAddNewColorPresetPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+
 	///Tab switching functions
 	void switchTabsAndButtons(bool state);
 
 	//Data getters
 	void getSliderData(MyGUI::Widget* slider_parent, SliderData* p_sliderData);
+	MyGUI::ScrollBar* getScrollBar(const std::string& name);
 	Color getColorFromSliders();
 	Color getColorFromHsvPicker();
 	static Color getColorPickerColorTransformed(float uv_x, float uv_y, Color col);
@@ -53,6 +58,7 @@ public:
 	MyGUI::Widget* getHsvPicker();
 	MyGUI::Widget* getHsvPickerPointer();
 	MyGUI::Widget* getHexInputBox();
+	MyGUI::Widget* getColorPresetsPanel();
 
 	//Color slider functions
 	void setupColorSlider(

@@ -5,6 +5,7 @@
 #include <SmSdk/offsets.hpp>
 
 #include "BetterPaintToolGui.hpp"
+#include "CustomPaintToolGui.hpp"
 #include "BetterPaintTool.hpp"
 
 #include <Windows.h>
@@ -43,7 +44,7 @@ static bool ms_mhHooksAttached = false;
 #	define BPT_UPDATE_FUNC 0x3EE6D0
 #endif
 
-void process_attach()
+void process_attach(HMODULE hmod)
 {
 	AttachDebugConsole();
 
@@ -63,6 +64,7 @@ void process_attach()
 		return;
 	}
 
+	CustomPaintToolGui::SelfDll = hmod;
 	ms_mhInitialized = true;
 
 	//Do the hooking here
@@ -87,18 +89,17 @@ void process_detach(HMODULE hmod)
 
 		MH_Uninitialize();
 	}
-
-	FreeLibrary(hmod);
 }
 
-BOOL APIENTRY DllMain(HMODULE hModule,
+BOOL APIENTRY DllMain(
+	HMODULE hModule,
 	DWORD  ul_reason_for_call,
 	LPVOID lpReserved)
 {
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		process_attach();
+		process_attach(hModule);
 		break;
 	case DLL_PROCESS_DETACH:
 		process_detach(hModule);
