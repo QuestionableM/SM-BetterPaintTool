@@ -124,6 +124,11 @@ public:
 		return v_output;
 	}
 
+	void setColor(Color col)
+	{
+		m_value["color"] = col.data;
+	}
+
 	bool isSelected() const
 	{
 		return m_value.get("selected", false).asBool();
@@ -143,7 +148,8 @@ void BetterPaintToolGui::requestDrawItem(MyGUI::ItemBox* _sender, MyGUI::Widget*
 	ColorBoxJsonWrapper v_jsonWrapper(*m_pItemBox->getItemDataAt<Json::Value>(_info.index));
 	ColorBoxWrapper v_colorBox(_item);
 
-	v_colorBox.setColor(v_jsonWrapper.getColor());
+	const ColorPreset& v_curPreset = g_colorPresets[g_currentColorPresetIdx];
+	v_colorBox.setColor(v_curPreset.colors[_info.index]);
 	v_colorBox.getBgButton()->setStateSelected(v_jsonWrapper.isSelected());
 }
 
@@ -176,7 +182,9 @@ void BetterPaintToolGui::eventMouseItemActivate(MyGUI::ItemBox* _sender, std::si
 
 	if (InputManager::IsKeyHeld(VK_CONTROL))
 	{
-		this->pickColorAtIndex(idx);
+		// Can only edit colors that are from custom presets, not the default one
+		if (g_currentColorPresetIdx > 0)
+			this->openColorEditor(idx);
 	}
 	else
 	{
@@ -276,22 +284,6 @@ void BetterPaintToolGui::colorBEditTextChanged(MyGUI::EditBox* _sender)
 	this->updateColorSliderFromTextInput("ScrollB");
 }
 
-void BetterPaintToolGui::eventPresetColorsTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
-{
-	if (_sender->castType<MyGUI::Button>()->getStateSelected())
-		return;
-
-	this->switchTabsAndButtons(true);
-}
-
-void BetterPaintToolGui::eventCustomColorTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
-{
-	if (_sender->castType<MyGUI::Button>()->getStateSelected())
-		return;
-
-	this->switchTabsAndButtons(false);
-}
-
 
 void BetterPaintToolGui::eventAddNewColorPresetPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
 {
@@ -299,18 +291,51 @@ void BetterPaintToolGui::eventAddNewColorPresetPressed(MyGUI::Widget* _sender, i
 	g_colorPresets.emplace_back(
 		"Color Preset " + std::to_string(g_colorPresets.size())
 	);
+
+	this->updateCurrentPresetFromIndex();
+}
+
+void BetterPaintToolGui::eventRemoveCurrentPresetPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
+{
+	if (g_currentColorPresetIdx == 0 || g_colorPresets.size() <= 1)
+		return;
+
+	g_colorPresets.erase(g_colorPresets.begin() + g_currentColorPresetIdx);
+	g_currentColorPresetIdx = std::min(g_currentColorPresetIdx, g_colorPresets.size() - 1);
+
+	this->updateCurrentPresetFromIndex();
+}
+
+void BetterPaintToolGui::eventSwitchColorPresetRightPreseed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
+{
+	if (g_currentColorPresetIdx >= (g_colorPresets.size() - 1))
+		return;
+
+	g_currentColorPresetIdx++;
+	this->updateCurrentPresetFromIndex();
+}
+
+void BetterPaintToolGui::eventSwitchColorPresetLeftPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
+{
+	if (g_currentColorPresetIdx <= 0)
+		return;
+
+	g_currentColorPresetIdx--;
+	this->updateCurrentPresetFromIndex();
+}
+
+void BetterPaintToolGui::eventCloseColorEditorPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
+{
+	this->applyEditedColor();
 }
 
 
-void BetterPaintToolGui::switchTabsAndButtons(bool state)
+void BetterPaintToolGui::switchEditorMode(bool editorMode)
 {
-	this->getPresetColorsWnd()->setVisible(state);
-	this->getColorPresetsPanel()->setVisible(state);
+	this->getPresetColorsWnd()->setVisible(!editorMode);
+	this->getColorPresetsPanel()->setVisible(!editorMode);
 
-	this->getCustomColorWnd()->setVisible(!state);
-
-	this->getPresetColorsTab()->castType<MyGUI::Button>()->setStateSelected(state);
-	this->getCustomColorTab()->castType<MyGUI::Button>()->setStateSelected(!state);
+	this->getCustomColorWnd()->setVisible(editorMode);
 }
 
 void BetterPaintToolGui::getSliderData(MyGUI::Widget* slider_parent, SliderData* p_sliderData)
@@ -363,19 +388,9 @@ MyGUI::Widget* BetterPaintToolGui::getPresetColorsWnd()
 	return m_pMainPanel->findWidget("PresetColorsWnd");
 }
 
-MyGUI::Widget* BetterPaintToolGui::getPresetColorsTab()
-{
-	return m_pMainPanel->findWidget("PresetColorsTab");
-}
-
 MyGUI::Widget* BetterPaintToolGui::getCustomColorWnd()
 {
 	return m_pMainPanel->findWidget("CustomColorWnd");
-}
-
-MyGUI::Widget* BetterPaintToolGui::getCustomColorTab()
-{
-	return m_pMainPanel->findWidget("CustomColorTab");
 }
 
 MyGUI::Widget* BetterPaintToolGui::getColorPicker()
@@ -406,6 +421,31 @@ MyGUI::Widget* BetterPaintToolGui::getHexInputBox()
 MyGUI::Widget* BetterPaintToolGui::getColorPresetsPanel()
 {
 	return m_pMainPanel->findWidget("ColorPresetsPanel");
+}
+
+MyGUI::Button* BetterPaintToolGui::getLeftPresetSwitch()
+{
+	return m_pMainPanel->findWidget("SwitchPresetLeftBtn")->castType<MyGUI::Button>();
+}
+
+MyGUI::Button* BetterPaintToolGui::getRightPresetSwitch()
+{
+	return m_pMainPanel->findWidget("SwitchPresetRightBtn")->castType<MyGUI::Button>();
+}
+
+MyGUI::Button* BetterPaintToolGui::getAddNewPresetButton()
+{
+	return m_pMainPanel->findWidget("AddNewPresetBtn")->castType<MyGUI::Button>();
+}
+
+MyGUI::Button* BetterPaintToolGui::getRemoveCurrentPresetButton()
+{
+	return m_pMainPanel->findWidget("RemoveCurrentPresetBtn")->castType<MyGUI::Button>();
+}
+
+MyGUI::EditBox* BetterPaintToolGui::getPresetNameEditBox()
+{
+	return m_pMainPanel->findWidget("PresetNameInput")->castType<MyGUI::EditBox>();
 }
 
 void BetterPaintToolGui::setupColorSlider(
@@ -472,15 +512,14 @@ void BetterPaintToolGui::setColorSliderPos(const std::string& widget_name, std::
 	v_pHolder->findWidget("Value")->castType<MyGUI::TextBox>()->setCaption(std::to_string(value));
 }
 
+void BetterPaintToolGui::updateHexInputParameter(const std::string& newVal)
+{
+	m_pGuiInterface->func7("HexInput", newVal);
+}
+
 void BetterPaintToolGui::updateHexValueFromColor(Color col)
 {
-	char v_buffer[10];
-	sprintf_s(v_buffer, "%02X%02X%02X", std::uint32_t(col.r), std::uint32_t(col.g), std::uint32_t(col.b));
-
-	const std::string v_hexStr(v_buffer, 6);
-
-	this->getHexInputBox()->castType<MyGUI::EditBox>()->setOnlyText(v_hexStr);
-	m_pGuiInterface->func7("HexInput", v_hexStr);
+	this->getHexInputBox()->castType<MyGUI::EditBox>()->setOnlyText(col.toHexStringRGB());
 }
 
 void BetterPaintToolGui::updateSlidersFromColor(Color col)
@@ -547,6 +586,76 @@ void BetterPaintToolGui::updateTextureGradient(Color color)
 	v_tex->unlock();
 }
 
+void BetterPaintToolGui::updateCurrentPresetFromIndex()
+{
+	this->getLeftPresetSwitch()->setVisible(g_currentColorPresetIdx > 0);
+	this->getRightPresetSwitch()->setVisible(g_currentColorPresetIdx < (g_colorPresets.size() - 1));
+
+	this->getRemoveCurrentPresetButton()->setVisible(g_currentColorPresetIdx > 0);
+
+	MyGUI::EditBox* v_pEditBox = this->getPresetNameEditBox();
+	v_pEditBox->setEditReadOnly(g_currentColorPresetIdx == 0);
+	v_pEditBox->setCaption(
+		g_colorPresets[g_currentColorPresetIdx].name
+	);
+
+	this->updateColorPaletteFromIndex();
+}
+
+void BetterPaintToolGui::updateColorPaletteFromIndex()
+{
+	if (m_pItemBox->getItemCount() != 40)
+		return;
+
+	ColorPreset& v_curPreset = g_colorPresets[g_currentColorPresetIdx];
+
+	for (std::size_t a = 0; a < 40; a++)
+	{
+		ColorBoxJsonWrapper v_jsonWrapper(*m_pItemBox->getItemDataAt<Json::Value>(a));
+		v_jsonWrapper.setSelected(false);
+		v_jsonWrapper.setColor(v_curPreset.colors[a]);
+
+		ColorBoxWrapper v_itemWrapper(m_pItemBox->getWidgetByIndex(a));
+		v_itemWrapper.getBgButton()->setStateSelected(false);
+		v_itemWrapper.setColor(v_curPreset.colors[a]);
+	}
+}
+
+void BetterPaintToolGui::openColorEditor(std::size_t colIdx)
+{
+	this->getCustomColorWnd()->setUserData(colIdx);
+
+	m_pMainPanel->findWidget("CustomColorTitle")->castType<MyGUI::TextBox>()->setCaptionWithReplacing(
+		"Editing Color #ffff00" + std::to_string(colIdx + 1)
+	);
+
+	const Color v_curColor = g_colorPresets[g_currentColorPresetIdx].colors[colIdx];
+
+	this->updateHsvAndColorPickersFromColor(v_curColor);
+	this->updateHexValueFromColor(v_curColor);
+	this->updateSlidersFromColor(v_curColor);
+
+	this->switchEditorMode(true);
+}
+
+void BetterPaintToolGui::applyEditedColor()
+{
+	const std::size_t v_idx = *this->getCustomColorWnd()->getUserData<std::size_t>();
+	if (v_idx >= 40) return;
+
+	const Color v_newColor = this->getColorFromSliders();
+	g_colorPresets[g_currentColorPresetIdx].colors[v_idx] = v_newColor.data;
+
+	ColorBoxWrapper(m_pItemBox->getWidgetByIndex(v_idx)).setColor(v_newColor);
+
+	ColorBoxJsonWrapper v_jsonWrapper(*m_pItemBox->getItemDataAt<Json::Value>(v_idx));
+	v_jsonWrapper.setColor(v_newColor);
+	if (v_jsonWrapper.isSelected())
+		this->updateHexValueFromColor(v_newColor.toHexStringRGB());
+
+	this->switchEditorMode(false);
+}
+
 
 
 void BetterPaintToolGui::createTextureGradient()
@@ -608,7 +717,6 @@ void BetterPaintToolGui::initializeHooked()
 		MyGUI::Align::Default,
 		"Back",
 		"PaintTool");
-
 	m_pMainPanel->setNeedKeyFocus(false);
 
 	CustomPaintToolGui::writeIfNotExists();
@@ -640,22 +748,6 @@ void BetterPaintToolGui::initializeHooked()
 
 		v_pEditBox->setMaxTextLength(6);
 		v_pEditBox->eventEditTextChange += MyGUI::newDelegate(this, &BetterPaintToolGui::eventEditTextChange);
-	}
-
-	{
-		//Setup PresetColorsTab button
-		MyGUI::Button* v_pBtn = this->getPresetColorsTab()->castType<MyGUI::Button>();
-
-		v_pBtn->setStateSelected(true);
-		v_pBtn->eventMouseButtonPressed += MyGUI::newDelegate(this, &BetterPaintToolGui::eventPresetColorsTabPressed);
-	}
-
-	{
-		//Setup CustomColorTab button
-		MyGUI::Button* v_pBtn = this->getCustomColorTab()->castType<MyGUI::Button>();
-
-		v_pBtn->setStateSelected(false);
-		v_pBtn->eventMouseButtonPressed += MyGUI::newDelegate(this, &BetterPaintToolGui::eventCustomColorTabPressed);
 	}
 
 	{
@@ -698,8 +790,20 @@ void BetterPaintToolGui::initializeHooked()
 	}
 
 	{
-		MyGUI::Button* v_pBtn = m_pMainPanel->findWidget("AddNewPresetBtn")->castType<MyGUI::Button>();
-		v_pBtn->eventMouseButtonPressed += MyGUI::newDelegate(this, &BetterPaintToolGui::eventAddNewColorPresetPressed);
+		this->getAddNewPresetButton()->eventMouseButtonPressed += MyGUI::newDelegate(
+			this, &BetterPaintToolGui::eventAddNewColorPresetPressed);
+		
+		this->getRemoveCurrentPresetButton()->eventMouseButtonPressed += MyGUI::newDelegate(
+			this, &BetterPaintToolGui::eventRemoveCurrentPresetPressed);
+
+		this->getLeftPresetSwitch()->eventMouseButtonPressed += MyGUI::newDelegate(
+			this, &BetterPaintToolGui::eventSwitchColorPresetLeftPressed);
+
+		this->getRightPresetSwitch()->eventMouseButtonPressed += MyGUI::newDelegate(
+			this, &BetterPaintToolGui::eventSwitchColorPresetRightPreseed);
+
+		m_pMainPanel->findWidget("ApplyColorChange")->castType<MyGUI::Button>()->eventMouseButtonPressed += MyGUI::newDelegate(
+			this, &BetterPaintToolGui::eventCloseColorEditorPressed);
 	}
 
 	m_pItemBox = this->getPresetColorsWnd()->findWidget("ColorGrid")->castType<MyGUI::ItemBox>();
@@ -708,6 +812,7 @@ void BetterPaintToolGui::initializeHooked()
 	m_pItemBox->requestDrawItem         = MyGUI::newDelegate(this, &BetterPaintToolGui::requestDrawItem);
 	m_pItemBox->eventMouseItemActivate += MyGUI::newDelegate(this, &BetterPaintToolGui::eventMouseItemActivate);
 
+	this->getCustomColorWnd()->setVisible(false);
 	m_pMainPanel->setVisible(false);
 
 	if (m_pGuiInterface)
@@ -722,7 +827,7 @@ void BetterPaintToolGui::initParams(BetterPaintTool* paint_tool)
 	this->updateHexValueFromColor(v_col);
 	this->updateSlidersFromColor(v_col);
 
-	this->switchTabsAndButtons(BetterPaintToolGui::isColorPreset(v_col));
+	this->updateCurrentPresetFromIndex();
 }
 
 void BetterPaintToolGui::h_initialize(BetterPaintToolGui* self)

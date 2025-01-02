@@ -1,28 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Layout" version="3.2.0">
-    <Widget type="Widget" skin="PanelEmpty" position="0 0 600 400" name="MainPanel">
+    <Widget type="Widget" skin="PanelEmpty" position="0 0 600 350" name="MainPanel">
         <Property key="NeedMouse" value="true"/>
         <Property key="NeedKey" value="false"/>
-        <Widget type="Button" skin="InventoryTab" position="20 0 200 50" align="Left Top" name="PresetColorsTab">
-            <Property key="Caption" value="Preset Colors"/>
-            <Property key="TextAlign" value="Center"/>
-            <Property key="FontName" value="SM_ItemTitle"/>
-            <Property key="TextShadow" value="true"/>
-            <Property key="NeedKey" value="false"/>
-            <Property key="NeedMouse" value="true"/>
-            <Property key="Alpha" value="1"/>
-            <Property key="InheritsAlpha" value="false"/>
-        </Widget>
-        <Widget type="Button" skin="InventoryTab" position="240 0 200 50" align="Left Top" name="CustomColorTab">
-            <Property key="Caption" value="Custom"/>
-            <Property key="FontName" value="SM_ItemTitle"/>
-            <Property key="TextAlign" value="Center"/>
-            <Property key="TextShadow" value="true"/>
-            <Property key="NeedKey" value="false"/>
-            <Property key="NeedMouse" value="true"/>
-            <Property key="InheritsAlpha" value="false"/>
-        </Widget>
-        <Widget type="Widget" skin="BackgroundPopup" position="0 50 600 349" align="Default" name="PresetColorsWnd">
+        <Widget type="Widget" skin="BackgroundPopup" position="0 0 600 350" align="Default" name="PresetColorsWnd">
             <Property key="NeedKey" value="false"/>
             <Property key="NeedMouse" value="true"/>
             <Property key="InheritsAlpha" value="false"/>

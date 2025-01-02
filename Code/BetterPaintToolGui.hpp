@@ -34,14 +34,16 @@ public:
 	void colorREditTextChanged(MyGUI::EditBox* _sender);
 	void colorGEditTextChanged(MyGUI::EditBox* _sender);
 	void colorBEditTextChanged(MyGUI::EditBox* _sender);
-	void eventPresetColorsTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
-	void eventCustomColorTabPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
 
 	// Color presets callbacks
 	void eventAddNewColorPresetPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+	void eventRemoveCurrentPresetPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+	void eventSwitchColorPresetRightPreseed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+	void eventSwitchColorPresetLeftPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+	void eventCloseColorEditorPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
 
 	///Tab switching functions
-	void switchTabsAndButtons(bool state);
+	void switchEditorMode(bool editorMode);
 
 	//Data getters
 	void getSliderData(MyGUI::Widget* slider_parent, SliderData* p_sliderData);
@@ -50,15 +52,18 @@ public:
 	Color getColorFromHsvPicker();
 	static Color getColorPickerColorTransformed(float uv_x, float uv_y, Color col);
 	MyGUI::Widget* getPresetColorsWnd();
-	MyGUI::Widget* getPresetColorsTab();
 	MyGUI::Widget* getCustomColorWnd();
-	MyGUI::Widget* getCustomColorTab();
 	MyGUI::Widget* getColorPicker();
 	MyGUI::Widget* getColorPickerPointer();
 	MyGUI::Widget* getHsvPicker();
 	MyGUI::Widget* getHsvPickerPointer();
 	MyGUI::Widget* getHexInputBox();
 	MyGUI::Widget* getColorPresetsPanel();
+	MyGUI::Button* getLeftPresetSwitch();
+	MyGUI::Button* getRightPresetSwitch();
+	MyGUI::Button* getAddNewPresetButton();
+	MyGUI::Button* getRemoveCurrentPresetButton();
+	MyGUI::EditBox* getPresetNameEditBox();
 
 	//Color slider functions
 	void setupColorSlider(
@@ -72,10 +77,16 @@ public:
 	void setColorSliderPos(const std::string& widget_name, std::size_t value);
 	
 	//Update functions
+	void updateHexInputParameter(const std::string& newVal);
 	void updateHexValueFromColor(Color col);
 	void updateSlidersFromColor(Color col);
 	void updateHsvAndColorPickersFromColor(Color col);
 	void updateTextureGradient(Color color);
+	void updateCurrentPresetFromIndex();
+	void updateColorPaletteFromIndex();
+
+	void openColorEditor(std::size_t colIdx);
+	void applyEditedColor();
 
 	//Create functions
 	void createTextureGradient();

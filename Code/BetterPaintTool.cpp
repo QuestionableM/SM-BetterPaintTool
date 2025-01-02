@@ -64,8 +64,8 @@ bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 
 		self->m_pGuiInterface->m_mapStringToFunction.emplace("InitFunc",
 			[self](const std::string& str) -> void {
-				GuiBase* v_gui_ptr = self->m_pGuiInterface->m_pGuiBase.get();
-				reinterpret_cast<BetterPaintToolGui*>(v_gui_ptr)->initParams(self);
+				GuiBase* v_pGui = self->m_pGuiInterface->m_pGuiBase.get();
+				reinterpret_cast<BetterPaintToolGui*>(v_pGui)->initParams(self);
 			}
 		);
 	}

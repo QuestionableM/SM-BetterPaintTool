@@ -1,39 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Layout" version="3.2.0">
-    <Widget type="Widget" skin="PanelEmpty" name="MainPanel" position_real="0 0 0.3125 0.37037037037037035">
+    <Widget type="Widget" skin="PanelEmpty" name="MainPanel" position_real="0 0 0.3125 0.32407407407407407">
         <Property key="NeedMouse" value="true" />
         <Property key="NeedKey" value="false" />
-        <Widget type="Button" skin="InventoryTab" align="Left Top" name="PresetColorsTab" position_real="0.03333333333333333 0 0.3333333333333333 0.125">
-            <Property key="Caption" value="Preset Colors" />
-            <Property key="TextAlign" value="Center" />
-            <Property key="FontName" value="SM_ItemTitle" />
-            <Property key="TextShadow" value="true" />
-            <Property key="NeedKey" value="false" />
-            <Property key="NeedMouse" value="true" />
-            <Property key="Alpha" value="1" />
-            <Property key="InheritsAlpha" value="false" />
-        </Widget>
-        <Widget type="Button" skin="InventoryTab" align="Left Top" name="CustomColorTab" position_real="0.4 0 0.3333333333333333 0.125">
-            <Property key="Caption" value="Custom" />
-            <Property key="FontName" value="SM_ItemTitle" />
-            <Property key="TextAlign" value="Center" />
-            <Property key="TextShadow" value="true" />
+        <Widget type="Widget" skin="BackgroundPopup" align="Default" name="PresetColorsWnd" position_real="0 0 1 1">
             <Property key="NeedKey" value="false" />
             <Property key="NeedMouse" value="true" />
             <Property key="InheritsAlpha" value="false" />
-        </Widget>
-        <Widget type="Widget" skin="BackgroundPopup" align="Default" name="PresetColorsWnd" position_real="0 0.125 1 0.8725">
-            <Property key="NeedKey" value="false" />
-            <Property key="NeedMouse" value="true" />
-            <Property key="InheritsAlpha" value="false" />
-            <Widget type="TextBox" skin="TextBox" position_real="0.08166666666666667 0.14040114613180515 0.8316666666666667 0.14040114613180515">
+            <Widget type="TextBox" skin="TextBox" position_real="0.08166666666666667 0.14 0.8316666666666667 0.14">
                 <Property key="Caption" value="#{PAINT_TOOL_TITLE}" />
                 <Property key="FontName" value="SM_HeaderLarge_Wide" />
                 <Property key="TextAlign" value="Center" />
                 <Property key="NeedKey" value="false" />
                 <Property key="NeedMouse" value="false" />
             </Widget>
-            <Widget type="ItemBox" skin="InventoryItemBox2" name="ColorGrid" position_real="0.08166666666666667 0.2808022922636103 0.85 0.5759312320916905">
+            <Widget type="ItemBox" skin="InventoryItemBox2" name="ColorGrid" position_real="0.08166666666666667 0.28 0.85 0.5742857142857143">
                 <Property key="NeedKey" value="false" />
                 <Property key="NeedDragDrop" value="false" />
             </Widget>
@@ -43,7 +24,7 @@
         <Property key="NeedKey" value="false" />
         <Property key="NeedMouse" value="true" />
         <Property key="InheritsAlpha" value="false" />
-        <Widget type="TextBox" skin="TextBox" align="HStretch Top" position_real="0.08166666666666667 0.05012531328320802 0.8316666666666667 0.12280701754385964">
+        <Widget type="TextBox" skin="TextBox" name="CustomColorTitle" align="HStretch Top" position_real="0.08166666666666667 0.05012531328320802 0.8316666666666667 0.12280701754385964">
             <Property key="Caption" value="Editing Color TEST" />
             <Property key="FontName" value="SM_HeaderLarge_Wide" />
             <Property key="TextAlign" value="Center" />
