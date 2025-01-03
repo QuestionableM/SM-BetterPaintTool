@@ -1,22 +1,25 @@
 #include "BetterPaintTool.hpp"
 
-#include "SmSdk/Harvestable/HarvestablePhysicsProxy.hpp"
-#include "SmSdk/Harvestable/HarvestableManager.hpp"
-#include "SmSdk/Creation/BodyJointPhysicsProxy.hpp"
-#include "SmSdk/Creation/CreationManager.hpp"
-#include "SmSdk/Gui/InGameGuiManager.hpp"
-#include "SmSdk/Physics/PhysicsProxy.hpp"
-#include "SmSdk/Physics/Physics.hpp"
-#include "SmSdk/PlayerManager.hpp"
-#include "SmSdk/AudioManager.hpp"
-#include "SmSdk/InputManager.hpp"
-#include "SmSdk/StaticValues.hpp"
-#include "SmSdk/MyPlayer.hpp"
+#include <SmSdk/Harvestable/HarvestablePhysicsProxy.hpp>
+#include <SmSdk/Harvestable/HarvestableManager.hpp>
+#include <SmSdk/Creation/BodyJointPhysicsProxy.hpp>
+#include <SmSdk/Creation/CreationManager.hpp>
+#include <SmSdk/Gui/InGameGuiManager.hpp>
+#include <SmSdk/Physics/PhysicsProxy.hpp>
+#include <SmSdk/Physics/Physics.hpp>
+#include <SmSdk/PlayerManager.hpp>
+#include <SmSdk/AudioManager.hpp>
+#include <SmSdk/InputManager.hpp>
+#include <SmSdk/StaticValues.hpp>
+#include <SmSdk/Util/Color.hpp>
+#include <SmSdk/MyPlayer.hpp>
 
-#include "SmSdk/CharacterManager.hpp"
-#include "SmSdk/Character.hpp"
+#include <SmSdk/CharacterManager.hpp>
+#include <SmSdk/Character.hpp>
 
 #include "BetterPaintToolGui.hpp"
+#include "ColorPreset.hpp"
+
 #include "Utils/MathUtils.hpp"
 #include "Utils/Console.hpp"
 
@@ -68,6 +71,20 @@ bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 				reinterpret_cast<BetterPaintToolGui*>(v_pGui)->initParams(self);
 			}
 		);
+
+		self->m_pGuiInterface->m_mapMapCallbackStorage["ColorGrid"][""] =
+			[self](std::size_t idx, const Json::Value& jsonData) {
+				const Color v_newColor = ColorPresetStorage::GetCurrentPreset().colors[idx];
+				const Color v_currentColor = self->m_pNetworkData->paint_color;
+
+				if (v_currentColor.data != v_newColor.data)
+				{
+					self->setColor(v_newColor);
+					AudioManager::PlaySound("PaintTool - ColorPick");
+				}
+
+				self->m_pGuiInterface->close();
+			};
 	}
 
 	return v_out;
@@ -292,6 +309,7 @@ void BetterPaintTool::setColor(Color color)
 		return;
 
 	m_pNetworkData->paint_color = color;
+	m_pNetworkData->m_bDataChanged = true;
 	m_pNetworkData->m_bColorUpdated = true;
 
 	this->prev_paint_color = this->getInterpolatedColor();

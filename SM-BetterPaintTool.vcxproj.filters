@@ -45,6 +45,9 @@
     <ClCompile Include="Dependencies\SmSdk\src\MyPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\ColorPreset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Utils\ConColors.hpp">
@@ -198,6 +201,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\ColorPreset.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

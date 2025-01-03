@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Code\ColorPreset.cpp" />
     <ClCompile Include="Dependencies\SmSdk\src\Color.cpp" />
     <ClCompile Include="Code\CustomPaintToolGui.cpp" />
     <ClCompile Include="Dependencies\SmSdk\src\CreationManager.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Code\Utils\Console.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\ColorPreset.hpp" />
     <ClInclude Include="Code\Utils\MathUtils.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\AudioManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\Aligned16Base.hpp" />

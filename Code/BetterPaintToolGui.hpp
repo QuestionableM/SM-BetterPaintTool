@@ -92,13 +92,10 @@ public:
 	void createTextureGradient();
 	void createHueGradient();
 	void initializeHooked();
+	void initializeColorGrid();
 	void initParams(BetterPaintTool* paint_tool);
 
 	static t_init_func_sig o_initialize;
 	static void h_initialize(BetterPaintToolGui* self);
-
-	static bool isColorPreset(Color col);
-
-	static std::uint32_t g_paintColors[];
 
 }; // Size: 0x20
