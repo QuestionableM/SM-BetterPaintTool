@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelEmpty" name="MainPanel" position_real="0 0 0.3125 0.32407407407407407">
+        <Property key="NeedMouse" value="true" />
+        <Property key="NeedKey" value="false" />
+        <Widget type="Widget" skin="BackgroundPopup" align="Default" name="PresetColorsWnd" position_real="0 0 1 1">
+            <Property key="NeedKey" value="false" />
+            <Property key="NeedMouse" value="true" />
+            <Property key="InheritsAlpha" value="false" />
+            <Widget type="TextBox" skin="TextBox" position_real="0.08166666666666667 0.14 0.8316666666666667 0.14">
+                <Property key="Caption" value="#{PAINT_TOOL_TITLE}" />
+                <Property key="FontName" value="SM_HeaderLarge_Wide" />
+                <Property key="TextAlign" value="Center" />
+                <Property key="NeedKey" value="false" />
+                <Property key="NeedMouse" value="false" />
+            </Widget>
+            <Widget type="ItemBox" skin="InventoryItemBox2" name="ColorGrid" position_real="0.08166666666666667 0.28 0.85 0.5742857142857143">
+                <Property key="NeedKey" value="false" />
+                <Property key="NeedDragDrop" value="false" />
+            </Widget>
+            <Widget type="TextBox" skin="TextBox" align="HStretch Bottom" name="HelperText" position_real="0.05 0.8714285714285714 0.9 0.08571428571428572">
+                <Property key="TextAlign" value="Center" />
+                <Property key="FontName" value="SM_Button" />
+                <Property key="TextShadow" value="true" />
+                <Property key="Caption" value="Default color palette cannot be edited" />
+            </Widget>
+        </Widget>
+    </Widget>
+    <Widget type="Widget" skin="BackgroundPopup" align="Default" layer="Main" name="CustomColorWnd" position_real="0 0 0.3125 0.36944444444444446">
+        <Property key="NeedKey" value="false" />
+        <Property key="NeedMouse" value="true" />
+        <Property key="InheritsAlpha" value="false" />
+        <Widget type="TextBox" skin="TextBox" name="CustomColorTitle" align="HStretch Top" position_real="0.08166666666666667 0.05012531328320802 0.8316666666666667 0.12280701754385964">
+            <Property key="Caption" value="Editing Color TEST" />
+            <Property key="FontName" value="SM_HeaderLarge_Wide" />
+            <Property key="TextAlign" value="Center" />
+            <Property key="NeedKey" value="false" />
+            <Property key="NeedMouse" value="false" />
+        </Widget>
+        <Widget type="Widget" skin="PanelEmpty" align="Left Bottom" name="ListBoxBG3" position_real="0.05 0.7994987468671679 0.535 0.12531328320802004">
+            <Property key="NeedMouse" value="true" />
+            <Property key="NeedKey" value="true" />
+            <Widget type="TextBox" skin="TextBox" align="HStretch Top" position_real="0.5233644859813084 0 0.4766355140186916 1">
+                <Property key="FontName" value="SM_Button" />
+                <Property key="TextAlign" value="Center" />
+                <Property key="TextShadow" value="true" />
+                <Property key="Caption" value="Hex Color Input" />
+                <Property key="NeedKey" value="false" />
+                <Property key="NeedMouse" value="false" />
+            </Widget>
+            <Widget type="Widget" skin="SearchBarBackground" align="HStretch Top" position_real="0 0 0.4766355140186916 1">
+                <Property key="NeedMouse" value="true" />
+                <Property key="NeedKey" value="true" />
+                <Widget type="EditBox" skin="EditBoxEmpty" align="HStretch VStretch" name="HexInput" position_real="0.013071895424836602 0.04 0.9673202614379085 0.92">
+                    <Property key="FontName" value="SM_Button" />
+                    <Property key="TextAlign" value="Center" />
+                    <Property key="TextShadow" value="true" />
+                    <Property key="NeedMouse" value="true" />
+                    <Property key="NeedKey" value="true" />
+                </Widget>
+            </Widget>
+        </Widget>
+        <Widget type="Widget" skin="PanelEmpty" align="Left Bottom" name="ScrollR" position_real="0.05 0.20050125313283207 0.5 0.12531328320802004" />
+        <Widget type="Widget" skin="PanelEmpty" align="Left Bottom" name="ScrollG" position_real="0.05 0.38847117794486213 0.5 0.12531328320802004" />
+        <Widget type="Widget" skin="PanelEmpty" align="Left Bottom" name="ScrollB" position_real="0.05 0.5764411027568922 0.5 0.12531328320802004" />
+        <Widget type="ImageBox" skin="ImageBox" align="Right Bottom" name="ColorPicker" position_real="0.7 0.20050125313283207 0.25 0.37593984962406013">
+            <Property key="NeedKey" value="false" />
+        </Widget>
+        <Widget type="ImageBox" skin="ImageBox" align="Right Bottom" name="HsvPicker" position_real="0.7 0.6265664160401002 0.25 0.07518796992481203">
+            <Property key="NeedKey" value="false" />
+        </Widget>
+        <Widget type="Button" skin="PrimaryButton" align="Right Bottom" name="ApplyColorChange" position_real="0.7 0.7994987468671679 0.25 0.12531328320802004">
+            <Property key="FontName" value="SM_Button" />
+            <Property key="TextAlign" value="Center" />
+            <Property key="TextShadow" value="true" />
+            <Property key="Caption" value="Apply" />
+        </Widget>
+    </Widget>
+    <Widget type="Widget" skin="PanelEmpty" name="ColorPresetsPanel" position_real="0 0.3888888888888889 0.3125 0.1111111111111111">
+        <Property key="NeedMouse" value="true" />
+        <Property key="NeedKey" value="false" />
+        <Widget type="Widget" skin="BackgroundPopup" position_real="0 0 1 1">
+            <Widget type="Button" skin="DressbotArrowLeft" align="Left Top" name="SwitchPresetLeftBtn" position_real="0.05 0.25 0.1 0.5" />
+            <Widget type="Button" skin="DressbotArrowRight" align="Left Top" name="SwitchPresetRightBtn" position_real="0.5666666666666667 0.25 0.1 0.5" />
+            <Widget type="Widget" skin="SearchBarBackground" align="HStretch Top" position_real="0.15 0.25 0.4166666666666667 0.5">
+                <Property key="NeedMouse" value="true" />
+                <Property key="NeedKey" value="true" />
+                <Widget type="EditBox" skin="EditBoxEmpty" align="HStretch VStretch" name="PresetNameInput" position_real="0.008 0.03333333333333333 0.984 0.9333333333333333">
+                    <Property key="FontName" value="SM_Button" />
+                    <Property key="TextAlign" value="Center" />
+                    <Property key="TextShadow" value="true" />
+                    <Property key="NeedMouse" value="true" />
+                    <Property key="NeedKey" value="true" />
+                </Widget>
+            </Widget>
+            <Widget type="Button" skin="PrimaryButton" align="Right Top" name="AddNewPresetBtn" position_real="0.7166666666666667 0.20833333333333334 0.11666666666666667 0.5833333333333334">
+                <Property key="Caption" value="+" />
+                <Property key="FontName" value="SM_Button" />
+                <Property key="TextAlign" value="Center" />
+                <Property key="TextShadow" value="true" />
+            </Widget>
+            <Widget type="Button" skin="PrimaryButton" align="Right Top" name="RemoveCurrentPresetBtn" position_real="0.8333333333333334 0.20833333333333334 0.11666666666666667 0.5833333333333334">
+                <Property key="Caption" value="-" />
+                <Property key="FontName" value="SM_Button" />
+                <Property key="TextAlign" value="Center" />
+                <Property key="TextShadow" value="true" />
+            </Widget>
+        </Widget>
+    </Widget>
+    <CodeGeneratorSettings />
+</MyGUI>

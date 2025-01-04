@@ -45,6 +45,9 @@
     <ClCompile Include="Dependencies\SmSdk\src\MyPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\ColorPreset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Utils\ConColors.hpp">
@@ -197,5 +200,23 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\TimestampCheck.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\ColorPreset.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Utils\Buffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Layout\BetterPaintTool_converted.layout" />
+    <None Include="Layout\OptionsItem_Slider.layout" />
   </ItemGroup>
 </Project>

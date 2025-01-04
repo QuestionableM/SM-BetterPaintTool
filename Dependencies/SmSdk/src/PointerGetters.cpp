@@ -59,3 +59,4 @@ PTR_GETTER_DEFINE(GameState, GetCurrentState, SM_CURRENT_GAME_STATE_OFFSET);
 
 StaticValues::PaintToolEraseLimiterType StaticValues::sm_paintToolEraseLimiter{};
 StaticValues::PaintToolPaintLimiterType StaticValues::sm_paintToolPaintLimiter{};
+StaticValues::BlockBuildLimiterType     StaticValues::sm_blockBuildLimiter{};

@@ -1,22 +1,25 @@
 #include "BetterPaintTool.hpp"
 
-#include "SmSdk/Harvestable/HarvestablePhysicsProxy.hpp"
-#include "SmSdk/Harvestable/HarvestableManager.hpp"
-#include "SmSdk/Creation/BodyJointPhysicsProxy.hpp"
-#include "SmSdk/Creation/CreationManager.hpp"
-#include "SmSdk/Gui/InGameGuiManager.hpp"
-#include "SmSdk/Physics/PhysicsProxy.hpp"
-#include "SmSdk/Physics/Physics.hpp"
-#include "SmSdk/PlayerManager.hpp"
-#include "SmSdk/AudioManager.hpp"
-#include "SmSdk/InputManager.hpp"
-#include "SmSdk/StaticValues.hpp"
-#include "SmSdk/MyPlayer.hpp"
+#include <SmSdk/Harvestable/HarvestablePhysicsProxy.hpp>
+#include <SmSdk/Harvestable/HarvestableManager.hpp>
+#include <SmSdk/Creation/BodyJointPhysicsProxy.hpp>
+#include <SmSdk/Creation/CreationManager.hpp>
+#include <SmSdk/Gui/InGameGuiManager.hpp>
+#include <SmSdk/Physics/PhysicsProxy.hpp>
+#include <SmSdk/Physics/Physics.hpp>
+#include <SmSdk/PlayerManager.hpp>
+#include <SmSdk/AudioManager.hpp>
+#include <SmSdk/InputManager.hpp>
+#include <SmSdk/StaticValues.hpp>
+#include <SmSdk/Util/Color.hpp>
+#include <SmSdk/MyPlayer.hpp>
 
-#include "SmSdk/CharacterManager.hpp"
-#include "SmSdk/Character.hpp"
+#include <SmSdk/CharacterManager.hpp>
+#include <SmSdk/Character.hpp>
 
 #include "BetterPaintToolGui.hpp"
+#include "ColorPreset.hpp"
+
 #include "Utils/MathUtils.hpp"
 #include "Utils/Console.hpp"
 
@@ -39,12 +42,9 @@ void BetterPaintTool::h_processInputs(InputManager* self)
 		for (auto i = self->m_inputQueue.begin(); i != self->m_inputQueue.end();)
 		{
 			if (i->event_type == InputEventType_MouseScroll)
-			{
 				i = self->m_inputQueue.erase(i);
-				continue;
-			}
-
-			i++;
+			else
+				i++;
 		}
 
 		g_isPaintToolHoldingObject = false;
@@ -60,17 +60,51 @@ bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 	if (self->m_pGuiInterface)
 	{
 		self->m_pGuiInterface->m_mapStringToFunction.emplace("HexInput",
-			[self](const std::string& str) -> void {
+			[self](const std::string& str) -> void
+			{
 				self->setColor(str);
 			}
 		);
 
 		self->m_pGuiInterface->m_mapStringToFunction.emplace("InitFunc",
-			[self](const std::string& str) -> void {
-				GuiBase* v_gui_ptr = self->m_pGuiInterface->m_pGuiBase.get();
-				reinterpret_cast<BetterPaintToolGui*>(v_gui_ptr)->initParams(self);
+			[self](const std::string& str) -> void
+			{
+				ColorPresetStorage::LoadFromFile();
+
+				GuiBase* v_pGui = self->m_pGuiInterface->m_pGuiBase.get();
+				reinterpret_cast<BetterPaintToolGui*>(v_pGui)->initParams(self);
 			}
 		);
+
+		self->m_pGuiInterface->m_mapMapCallbackStorage["ColorGrid"][""] =
+			[self](std::size_t idx, const Json::Value& jsonData)
+			{
+				// Every time we close the paint tool we save the custom presets to the file
+				//ColorPresetStorage::SaveToFile();
+
+				const Color v_newColor = ColorPresetStorage::GetCurrentPreset().colors[idx];
+				const Color v_currentColor = self->m_pNetworkData->paint_color;
+
+				if (v_currentColor.data != v_newColor.data)
+				{
+					self->setColor(v_newColor);
+					AudioManager::PlaySound("PaintTool - ColorPick");
+				}
+
+				self->m_pGuiInterface->close();
+			};
+
+		const auto v_callbackCopy = self->m_pGuiInterface->m_closeCallback;
+		self->m_pGuiInterface->m_closeCallback =
+			[self, oldCallback = v_callbackCopy]() -> void
+			{
+				// Run the old callback first
+				if (oldCallback)
+					oldCallback();
+
+				// Then run our code to save the tool
+				ColorPresetStorage::SaveToFile();
+			};
 	}
 
 	return v_out;
@@ -295,6 +329,7 @@ void BetterPaintTool::setColor(Color color)
 		return;
 
 	m_pNetworkData->paint_color = color;
+	m_pNetworkData->m_bDataChanged = true;
 	m_pNetworkData->m_bColorUpdated = true;
 
 	this->prev_paint_color = this->getInterpolatedColor();

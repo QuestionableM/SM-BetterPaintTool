@@ -32,6 +32,14 @@ union Color
 	float getFloat(std::size_t idx);
 	void setFloat(std::size_t idx, float val);
 
+	inline std::string toHexStringRGB() const
+	{
+		char v_buffer[10];
+		sprintf_s(v_buffer, "%02X%02X%02X", std::uint32_t(this->r), std::uint32_t(this->g), std::uint32_t(this->b));
+
+		return std::string(v_buffer, 6);
+	}
+
 	inline bool operator==(Color other) const noexcept
 	{
 		return this->data == other.data;

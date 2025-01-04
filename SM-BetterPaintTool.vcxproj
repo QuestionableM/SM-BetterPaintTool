@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Code\ColorPreset.cpp" />
     <ClCompile Include="Dependencies\SmSdk\src\Color.cpp" />
     <ClCompile Include="Code\CustomPaintToolGui.cpp" />
     <ClCompile Include="Dependencies\SmSdk\src\CreationManager.cpp" />
@@ -145,6 +146,8 @@
     <ClCompile Include="Code\Utils\Console.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\ColorPreset.hpp" />
+    <ClInclude Include="Code\Utils\Buffer.hpp" />
     <ClInclude Include="Code\Utils\MathUtils.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\AudioManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\Aligned16Base.hpp" />
@@ -195,6 +198,14 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\config.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\Memory.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\StaticVariable.hpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Layout\BetterPaintTool_converted.layout" />
+    <None Include="Layout\OptionsItem_Slider.layout" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
