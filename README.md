@@ -40,7 +40,7 @@ There are 2 ways to enable the BetterPaintTool module:
 # Supported Versions
 | Mod Version | Game Version |
 | ----------- | ------------ |
-| v1.5.4 | 0.7.3.776 |
+| v1.5.4, v1.6, v1.7 | 0.7.3.776 |
 | v1.5.3 | 0.7.2.775 |
 | v1.5.2 | 0.7.1.772 |
 | v1.5.1 | 0.7.0.771 |
