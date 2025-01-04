@@ -60,20 +60,28 @@ bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 	if (self->m_pGuiInterface)
 	{
 		self->m_pGuiInterface->m_mapStringToFunction.emplace("HexInput",
-			[self](const std::string& str) -> void {
+			[self](const std::string& str) -> void
+			{
 				self->setColor(str);
 			}
 		);
 
 		self->m_pGuiInterface->m_mapStringToFunction.emplace("InitFunc",
-			[self](const std::string& str) -> void {
+			[self](const std::string& str) -> void
+			{
+				ColorPresetStorage::LoadFromFile();
+
 				GuiBase* v_pGui = self->m_pGuiInterface->m_pGuiBase.get();
 				reinterpret_cast<BetterPaintToolGui*>(v_pGui)->initParams(self);
 			}
 		);
 
 		self->m_pGuiInterface->m_mapMapCallbackStorage["ColorGrid"][""] =
-			[self](std::size_t idx, const Json::Value& jsonData) {
+			[self](std::size_t idx, const Json::Value& jsonData)
+			{
+				// Every time we close the paint tool we save the custom presets to the file
+				//ColorPresetStorage::SaveToFile();
+
 				const Color v_newColor = ColorPresetStorage::GetCurrentPreset().colors[idx];
 				const Color v_currentColor = self->m_pNetworkData->paint_color;
 
@@ -84,6 +92,18 @@ bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 				}
 
 				self->m_pGuiInterface->close();
+			};
+
+		const auto v_callbackCopy = self->m_pGuiInterface->m_closeCallback;
+		self->m_pGuiInterface->m_closeCallback =
+			[self, oldCallback = v_callbackCopy]() -> void
+			{
+				// Run the old callback first
+				if (oldCallback)
+					oldCallback();
+
+				// Then run our code to save the tool
+				ColorPresetStorage::SaveToFile();
 			};
 	}
 

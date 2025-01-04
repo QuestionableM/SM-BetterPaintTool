@@ -23,7 +23,6 @@ public:
 	void requestCoordItem(MyGUI::ItemBox* _sender, MyGUI::IntCoord& _coord, bool _drag);
 	void requestCreateWidgetItem(MyGUI::ItemBox* _sender, MyGUI::Widget* _item);
 	void requestDrawItem(MyGUI::ItemBox* _sender, MyGUI::Widget* _item, const MyGUI::IBDrawItemInfo& _info);
-	void pickColorAtIndex(std::size_t idx);
 	void eventMouseItemActivate(MyGUI::ItemBox* _sender, std::size_t idx);
 	void eventEditTextChange(MyGUI::EditBox* _sender);
 	void eventColorMatrixSelectColor(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
@@ -41,6 +40,7 @@ public:
 	void eventSwitchColorPresetRightPreseed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
 	void eventSwitchColorPresetLeftPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
 	void eventCloseColorEditorPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+	void eventPresetNameChanged(MyGUI::EditBox* _sender);
 
 	///Tab switching functions
 	void switchEditorMode(bool editorMode);
@@ -92,8 +92,8 @@ public:
 	void createTextureGradient();
 	void createHueGradient();
 	void initializeHooked();
-	void initializeColorGrid();
-	void initParams(BetterPaintTool* paint_tool);
+	void initializeColorGrid(BetterPaintTool* pPaintTool);
+	void initParams(BetterPaintTool* pPaintTool);
 
 	static t_init_func_sig o_initialize;
 	static void h_initialize(BetterPaintToolGui* self);

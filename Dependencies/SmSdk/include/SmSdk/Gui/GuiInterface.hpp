@@ -33,11 +33,18 @@ public:
 	virtual void func8(const std::string& str, const std::string& str2) { SMSDK_UNREF2(str, str2); }
 	virtual void func9(const std::string& str, const std::string& str2, const Json::Value& json_val) { SMSDK_UNREF3(str, str2, json_val); }
 	virtual void func10(const std::string& str, const std::string& str2, std::size_t idx, const Json::Value& json_val) { SMSDK_UNREF4(str, str2, idx, json_val); }
+	virtual void func11() {}
+	virtual void func12() {}
+	virtual void processDeferredCallbacks() {}
 
 	/* 0x0008 */ std::shared_ptr<GuiBase> m_pGuiBase;
+	/* 0x0018 */ bool m_bSomeBool;
 private:
-	/* 0x0018 */ char pad_0x18[0xC8];
+	/* 0x0019 */ char pad_0x19[0x7];
 public:
+	/* 0x0020 */ std::function<void(void)> m_closeCallback;
+	/* 0x0060 */ std::unordered_map<std::string, std::function<void(void)>> m_mapEmptyFunctionCallbacks;
+	/* 0x00A0 */ std::unordered_map<std::string, std::function<void(__int64)>> m_mapOneArgFunctionCallbacks;
 	/* 0x00E0 */ std::unordered_map<std::string, std::function<void(const std::string&)>> m_mapStringToFunction;
 private:
 	/* 0x0120 */ char pad_0x120[0x80];
@@ -52,6 +59,10 @@ public:
 }; // Size: 0x2A0
 
 static_assert(offsetof(GuiInterface, GuiInterface::m_pGuiBase) == 0x8, "GuiInterface::m_pGuiBase: Incorrect offset");
+static_assert(offsetof(GuiInterface, GuiInterface::m_bSomeBool) == 0x18, "GuiInterface::m_bSomeBool: Incorrect offset");
+static_assert(offsetof(GuiInterface, GuiInterface::m_closeCallback) == 0x20, "GuiInterface::m_closeCallback: Incorrect offset");
+static_assert(offsetof(GuiInterface, GuiInterface::m_mapEmptyFunctionCallbacks) == 0x60, "GuiInterface::m_mapEmptyFunctionCallbacks: Incorrect offset");
+static_assert(offsetof(GuiInterface, GuiInterface::m_mapOneArgFunctionCallbacks) == 0xA0, "GuiInterface::m_mapOneArgFunctionCallbacks: Incorrect offset");
 static_assert(offsetof(GuiInterface, GuiInterface::m_mapStringToFunction) == 0xE0, "GuiInterface::m_mapStringToFunction: Incorrect offset");
 static_assert(offsetof(GuiInterface, GuiInterface::m_mapMapCallbackStorage) == 0x1A0, "GuiInterface::m_mapMapCallbackStorage: Incorrect offset");
 static_assert(offsetof(GuiInterface, GuiInterface::m_deferredCallbackDeque) == 0x260, "GuiInterface::m_deferredCallbackDeque: Incorrect offset");

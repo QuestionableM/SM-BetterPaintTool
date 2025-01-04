@@ -1,5 +1,7 @@
 #include "ColorPreset.hpp"
 
+#include "Utils/Buffer.hpp"
+
 ColorPreset::ColorPreset(
 	const std::string& presetName,
 	std::uint32_t presetColors[40]
@@ -18,12 +20,86 @@ ColorPreset::ColorPreset(
 		this->colors[a] = 0xFFEEEEEE;
 }
 
+ColorPreset::ColorPreset(
+	ColorPreset&& other
+) noexcept :
+	name(std::move(other.name))
+{
+	std::memcpy(this->colors, other.colors, sizeof(this->colors));
+}
+
 ////////////// COLOR PRESET STORAGE //////////////////
 
 ColorPreset& ColorPresetStorage::GetCurrentPreset() noexcept
 {
 	return ColorPresetStorage::ColorPresets[ColorPresetStorage::CurrentColorPreset];
 }
+
+void ColorPresetStorage::SaveToFile()
+{
+	WriteBuffer v_outBuffer;
+
+	const std::size_t v_presetCount = ColorPresetStorage::ColorPresets.size();
+	for (std::size_t a = 1; a < v_presetCount; a++)
+	{
+		const ColorPreset& v_curPreset = ColorPresetStorage::ColorPresets[a];
+		const constexpr std::size_t v_colorCount = sizeof(ColorPreset::colors) / sizeof(ColorPreset::colors[0]);
+
+		v_outBuffer.writeString(v_curPreset.name);
+
+		for (std::size_t a = 0; a < v_colorCount; a++)
+			v_outBuffer.writeObject<std::uint32_t>(v_curPreset.colors[a]);
+	}
+
+	v_outBuffer.writeToFile(ColorPresetStorage_FilePath);
+}
+
+bool ColorPresetStorage::LoadFromFileInternal(
+	ReadBuffer& readBuffer,
+	std::vector<ColorPreset>& outColorPresets)
+{
+	ColorPreset v_tmpPreset;
+
+	while (readBuffer.readString(v_tmpPreset.name))
+	{
+		for (std::size_t a = 0; a < v_tmpPreset.getColorCount(); a++)
+		{
+			if (!readBuffer.readObject<std::uint32_t>(&v_tmpPreset.colors[a]))
+				return false;
+		}
+
+		outColorPresets.emplace_back(std::move(v_tmpPreset));
+	}
+
+	return true;
+}
+
+void ColorPresetStorage::LoadFromFile()
+{
+	if (ColorPresetStorage::PresetLoadedFromFile)
+		return;
+
+	ColorPresetStorage::PresetLoadedFromFile = true;
+
+	// Early returns might bloat the Assembly in that case, but who cares. Am I right?
+	std::vector<std::uint8_t> v_fileData;
+	if (!ReadBuffer::ReadFromFile(ColorPresetStorage_FilePath, v_fileData))
+		return;
+
+	ReadBuffer v_readBuff(v_fileData);
+	std::vector<ColorPreset> v_newColorPresets;
+	if (!ColorPresetStorage::LoadFromFileInternal(v_readBuff, v_newColorPresets))
+		return;
+
+	auto& v_colorPresets = ColorPresetStorage::ColorPresets;
+	if (v_colorPresets.size() > 1)
+		v_colorPresets.erase(v_colorPresets.begin() + 1, v_colorPresets.end());
+
+	v_colorPresets.insert(v_colorPresets.end(), v_newColorPresets.begin(), v_newColorPresets.end());
+	ColorPresetStorage::CurrentColorPreset = 0;
+}
+
+bool ColorPresetStorage::PresetLoadedFromFile = false;
 
 std::uint32_t ColorPresetStorage::DefaultPaintToolColors[40] =
 {

@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ColorPreset.hpp" />
+    <ClInclude Include="Code\Utils\Buffer.hpp" />
     <ClInclude Include="Code\Utils\MathUtils.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\AudioManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\Aligned16Base.hpp" />
