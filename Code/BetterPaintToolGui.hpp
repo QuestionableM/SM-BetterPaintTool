@@ -84,6 +84,7 @@ public:
 	void updateTextureGradient(Color color);
 	void updateCurrentPresetFromIndex();
 	void updateColorPaletteFromIndex();
+	void updateHelperTextState(bool showCannotEditMsg);
 
 	void openColorEditor(std::size_t colIdx);
 	void applyEditedColor();

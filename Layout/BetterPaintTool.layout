@@ -18,13 +18,19 @@
                 <Property key="NeedKey" value="false"/>
                 <Property key="NeedDragDrop" value="false"/>
             </Widget>
+            <Widget type="TextBox" skin="TextBox" position="30 305 540 30" align="HStretch Bottom" name="HelperText">
+                <Property key="TextAlign" value="Center"/>
+                <Property key="FontName" value="SM_Button"/>
+                <Property key="TextShadow" value="true"/>
+                <Property key="Caption" value="Default color palette cannot be edited"/>
+            </Widget>
         </Widget>
     </Widget>
     <Widget type="Widget" skin="BackgroundPopup" position="0 0 600 399" align="Default" layer="Main" name="CustomColorWnd">
         <Property key="NeedKey" value="false"/>
         <Property key="NeedMouse" value="true"/>
         <Property key="InheritsAlpha" value="false"/>
-        <Widget type="TextBox" skin="TextBox" position="49 20 499 49" align="HStretch Top">
+        <Widget type="TextBox" skin="TextBox" name="CustomColorTitle" position="49 20 499 49" align="HStretch Top">
             <Property key="Caption" value="Editing Color TEST"/>
             <Property key="FontName" value="SM_HeaderLarge_Wide"/>
             <Property key="TextAlign" value="Center"/>

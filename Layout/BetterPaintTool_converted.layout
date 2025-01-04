@@ -18,6 +18,12 @@
                 <Property key="NeedKey" value="false" />
                 <Property key="NeedDragDrop" value="false" />
             </Widget>
+            <Widget type="TextBox" skin="TextBox" align="HStretch Bottom" name="HelperText" position_real="0.05 0.8714285714285714 0.9 0.08571428571428572">
+                <Property key="TextAlign" value="Center" />
+                <Property key="FontName" value="SM_Button" />
+                <Property key="TextShadow" value="true" />
+                <Property key="Caption" value="Default color palette cannot be edited" />
+            </Widget>
         </Widget>
     </Widget>
     <Widget type="Widget" skin="BackgroundPopup" align="Default" layer="Main" name="CustomColorWnd" position_real="0 0 0.3125 0.36944444444444446">

@@ -544,6 +544,7 @@ void BetterPaintToolGui::updateCurrentPresetFromIndex()
 	this->getRightPresetSwitch()->setVisible(v_curPresetIdx < (v_colorPresets.size() - 1));
 
 	this->getRemoveCurrentPresetButton()->setVisible(v_curPresetIdx > 0);
+	this->updateHelperTextState(v_curPresetIdx == 0);
 
 	MyGUI::EditBox* v_pEditBox = this->getPresetNameEditBox();
 	v_pEditBox->setEditReadOnly(v_curPresetIdx == 0);
@@ -579,6 +580,16 @@ void BetterPaintToolGui::updateColorPaletteFromIndex()
 		if (v_colorSelected)
 			v_selectOnce = false;
 	}
+}
+
+void BetterPaintToolGui::updateHelperTextState(bool showCannotEditMsg)
+{
+	MyGUI::TextBox* v_pHelperText = m_pMainPanel->findWidget("HelperText")->castType<MyGUI::TextBox>();
+
+	if (showCannotEditMsg)
+		v_pHelperText->setCaption("Default color palette cannot be edited");
+	else
+		v_pHelperText->setCaption("Press #ffff00CTRL#ffffff + #ffff00LMB#ffffff/#ffff00RMB#ffffff on any color to change it");
 }
 
 void BetterPaintToolGui::openColorEditor(std::size_t colIdx)
