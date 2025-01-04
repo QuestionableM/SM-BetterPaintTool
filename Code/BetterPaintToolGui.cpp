@@ -52,8 +52,7 @@ struct ColorBoxJsonWrapper
 public:
 	inline ColorBoxJsonWrapper(Json::Value& json) :
 		m_value(json)
-	{
-	}
+	{}
 
 	Color getColor() const
 	{

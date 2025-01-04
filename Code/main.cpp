@@ -76,6 +76,7 @@ void process_attach(HMODULE hmod)
 
 	StaticValues::sm_paintToolPaintLimiter = 63;
 	StaticValues::sm_paintToolEraseLimiter = 63;
+	StaticValues::sm_blockBuildLimiter = 63;
 
 	ms_mhHooksAttached = MH_EnableHook(MH_ALL_HOOKS) == MH_OK;
 }
