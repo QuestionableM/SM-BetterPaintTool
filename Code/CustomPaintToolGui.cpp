@@ -7,7 +7,7 @@
 #include <fstream>
 
 HMODULE CustomPaintToolGui::SelfDll = nullptr;
-std::string CustomPaintToolGui::CustomLayoutPath = "$GAME_DATA/Gui/Layouts/Tool/Tool_PaintTool_DLL_Injected.layout";
+std::string CustomPaintToolGui::CustomLayoutPath = "$GAME_DATA/Gui/Layouts/Tool/Tool_PaintTool_DLL_Injected_v2.layout";
 std::string CustomPaintToolGui::CustomLayoutSliderPath = "$GAME_DATA/Gui/Layouts/Tool/Tool_PaintTool_Slider_DLL_Injected.layout";
 
 static bool GetTextResource(
