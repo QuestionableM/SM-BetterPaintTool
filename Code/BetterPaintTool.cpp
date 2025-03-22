@@ -378,9 +378,9 @@ bool BetterPaintTool::getColorFromCharacter(int char_idx, Color& out_color)
 	Character* v_char_data = CharacterManager::GetCharacter(char_idx);
 	if (!v_char_data) return false;
 
-	out_color.setFloat(0, v_char_data->color.x);
-	out_color.setFloat(1, v_char_data->color.y);
-	out_color.setFloat(2, v_char_data->color.z);
+	out_color.setFloat(0, v_char_data->m_color.x);
+	out_color.setFloat(1, v_char_data->m_color.y);
+	out_color.setFloat(2, v_char_data->m_color.z);
 	out_color.a = 0xFF;
 
 	return true;
