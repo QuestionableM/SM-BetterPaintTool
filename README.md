@@ -4,9 +4,9 @@
 </p>
 A DLL mod for Scrap Mechanic which enhances the functionality of the vanilla Paint Tool and allows you to pick any color you want!<br/>
 
-<br/><br/>
+<br/>
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/QuestionableM/SM-BetterPaintTool/total)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/QuestionableM/SM-BetterPaintTool/total?style=for-the-badge)
 
 # Features
 - HSL color picker
