@@ -5,26 +5,23 @@
 
 #include <DirectXMath.h>
 
+SMSDK_BEGIN_NAMESPACE
+
 class Shape
 {
-public:
-	virtual void func1() {}
-	virtual void func2() {}
-	virtual unsigned int getCollisionShapeType() { return 0; }
+	SDK_PRI virtual void func1() {}
+	SDK_PRI virtual void func2() {}
+	SDK_PUB virtual std::uint32_t getCollisionShapeType() { return 0; }
 
-private:
-	/* 0x0008 */ char pad_0x8[0x8];
-public:
-	/* 0x0010 */ boost::uuids::uuid m_shapeUuid;
-	/* 0x0020 */ __int32 m_shapeType;
-	/* 0x0024 */ Color m_shapeColor;
-private:
-	/* 0x0028 */ char pad_0x28[0x4];
-public:
-	/* 0x002C */ DirectX::XMFLOAT3 m_shapeSize;
-private:
-	/* 0x0038 */ char pad_0x38[0x28];
-
-}; //Size=0x0060
+	/* 0x0008 */ SDK_PRI char pad_0x8[0x8];
+	/* 0x0010 */ SDK_PUB boost::uuids::uuid m_shapeUuid;
+	/* 0x0020 */ SDK_PUB std::int32_t m_iShapeType;
+	/* 0x0024 */ SDK_PUB Color m_shapeColor;
+	/* 0x0028 */ SDK_PRI char pad_0x28[0x4];
+	/* 0x002C */ SDK_PUB DirectX::XMFLOAT3 m_shapeSize;
+	/* 0x0038 */ SDK_PRI char pad_0x38[0x28];
+}; // Size: 0x60
 
 static_assert(sizeof(Shape) == 0x60, "Shape: Incorrect Size");
+
+SMSDK_END_NAMESPACE

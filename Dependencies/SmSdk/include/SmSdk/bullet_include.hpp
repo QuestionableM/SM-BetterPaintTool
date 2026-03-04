@@ -9,19 +9,60 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletCollision/CollisionShapes/btBoxShape.h>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
+#include <BulletDynamics/Dynamics/btActionInterface.h>
 #else
-struct btRigidBody {};
-struct btBoxShape {};
-struct btPairCachingGhostObject {};
-struct btCollisionObject {};
-struct btHingeConstraint {};
-struct btCompoundShape {
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btRigidBody
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btBoxShape
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btPairCachingGhostObject
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btCollisionObject
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btHingeConstraint
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btCompoundShape
+{
 private:
 	char pad_data[120];
 };
-struct btNullPairCache {};
-struct btCollisionDispatcher {};
-struct btCollisionWorld {};
-struct btGhostPairCallback {};
-
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btNullPairCache
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btCollisionDispatcher
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btCollisionWorld
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btGhostPairCallback
+{
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btActionInterface
+{
+private:
+	void* data;
+};
+// This is a stub, please define `SMSDK_ENABLE_PHYSICS` to use Bullet Physics
+struct btVector3
+{
+private:
+	float data[4];
+};
 #endif

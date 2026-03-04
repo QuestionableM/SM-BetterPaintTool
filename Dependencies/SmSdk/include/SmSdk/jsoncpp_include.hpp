@@ -7,6 +7,11 @@
 #else
 namespace Json
 {
-	class Value {};
+// This is a stub, please define `SMSDK_ENABLE_JSONCPP` to use JSONCPP
+class Value
+{
+private:
+	char data[0x18];
+};
 }
 #endif

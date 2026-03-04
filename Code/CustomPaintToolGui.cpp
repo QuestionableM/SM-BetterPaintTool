@@ -33,7 +33,7 @@ static bool GetTextResource(
 bool file_exists(const std::string& path)
 {
 	std::string v_replaced_path = path;
-	DirectoryManager::ReplacePathR(v_replaced_path);
+	SM::DirectoryManager::ReplacePathR(v_replaced_path);
 
 	//Can't use filesystem in C++14, so i'ma use std::ifstream
 	std::ifstream v_file(v_replaced_path);
@@ -43,7 +43,7 @@ bool file_exists(const std::string& path)
 void writeStringToFile(const std::string& path, const std::string& data)
 {
 	std::string v_replaced_path = path;
-	DirectoryManager::ReplacePathR(v_replaced_path);
+	SM::DirectoryManager::ReplacePathR(v_replaced_path);
 
 	std::ofstream v_output(v_replaced_path, std::ios::binary);
 	if (v_output.is_open())

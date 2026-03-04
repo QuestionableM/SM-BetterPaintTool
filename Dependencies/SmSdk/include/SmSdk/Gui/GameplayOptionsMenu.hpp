@@ -1,27 +1,27 @@
 #include <SmSdk/Util/Memory.hpp>
 #include <SmSdk/offsets.hpp>
 
-#include "OptionsSubMenuBase.hpp"
+#include "SmSdk/Gui/OptionsSubMenuBase.hpp"
+
+SMSDK_BEGIN_NAMESPACE
 
 class GameplayOptionsMenu : public OptionsSubMenuBase
 {
-public:
-	GameplayOptionsMenu()
+	SDK_PUB GameplayOptionsMenu()
 	{
 		OptionsSubMenuBase::GameConstructor(this);
-	#if _SM_VERSION_NUM >= 070771
-		std::memset(this->someData, 0, sizeof(this->someData));
-	#endif
+#if _SM_VERSION_NUM >= 070771
+		std::memset(this->m_someData, 0, sizeof(this->m_someData));
+#endif
 		Memory::OverwriteVftable(this, SM_VTBL_GAMEPLAY_OPTIONS_MENU_OFFSET);
 	}
 
-	virtual ~GameplayOptionsMenu() = default;
-	void restoreDefaults() override { /* implemented by the game */ }
+	SDK_PUB virtual ~GameplayOptionsMenu() = default;
+	SDK_PUB void restoreDefaults() override { /* implemented by the game */ }
 
 #if _SM_VERSION_NUM >= 070771
-	char someData[16];
+	SDK_PRI char m_someData[16];
 #endif
-
 }; // Size: 0x168
 
 #if _SM_VERSION_NUM >= 070771
@@ -29,3 +29,5 @@ static_assert(sizeof(GameplayOptionsMenu) == 0x178, "GameplayOptionsMenu: Incorr
 #else
 static_assert(sizeof(GameplayOptionsMenu) == 0x168, "GameplayOptionsMenu: Incorrect Size");
 #endif
+
+SMSDK_END_NAMESPACE

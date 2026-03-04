@@ -14,6 +14,7 @@
 #include "SmSdk/InputManager.hpp"
 #include "SmSdk/StaticValues.hpp"
 #include "SmSdk/GameSettings.hpp"
+#include "SmSdk/Util/Console.hpp"
 #include "SmSdk/Pathfinder.hpp"
 #include "SmSdk/GameState.hpp"
 #include "SmSdk/MyPlayer.hpp"
@@ -23,6 +24,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
+SMSDK_USE_NAMESPACE
+
 //A file that contains all the offsets
 #include "SmSdk/offsets.hpp"
 
@@ -30,11 +33,15 @@
 
 #define GET_GLOBAL_PTR(type, val) *reinterpret_cast<type**>(std::uintptr_t(GetModuleHandle(NULL)) + val)
 
-#define PTR_GETTER_DEFINE(type, func_name, val) type* type::func_name() { return GET_GLOBAL_PTR(type, val); }
+#define PTR_GETTER_DEFINE(type, func_name, val) \
+	type* type::func_name() \
+	{ \
+		return GET_GLOBAL_PTR(type, val); \
+	}
 #define GET_INSTANCE_DEFINE(type, val) PTR_GETTER_DEFINE(type, GetInstance, val)
 
 /////////GETTER DEFINITIONS
- 
+
 GET_INSTANCE_DEFINE(AreaTriggerManager, SM_AREA_TRIGGER_MANAGER_OFFSET);
 GET_INSTANCE_DEFINE(HarvestableManager, SM_HARVESTABLE_MANAGER_OFFSET);
 GET_INSTANCE_DEFINE(InGameGuiManager, SM_IN_GAME_GUI_MANAGER_OFFSET);
@@ -45,6 +52,7 @@ GET_INSTANCE_DEFINE(CharacterManager, SM_CHARACTER_MANAGER_OFFSET);
 GET_INSTANCE_DEFINE(CreationManager, SM_CREATION_MANAGER_OFFSET);
 GET_INSTANCE_DEFINE(Pathfinder, SM_PATHFINDER_MANAGER_OFFSET);
 GET_INSTANCE_DEFINE(NetObjManager, SM_NET_OBJ_MANAGER_OFFSET);
+GET_INSTANCE_DEFINE(UTILS::Console, SM_UTILS_CONSOLE_OFFSET);
 GET_INSTANCE_DEFINE(PortalManager, SM_PORTAL_MANAGER_OFFSET);
 GET_INSTANCE_DEFINE(PlayerManager, SM_PLAYER_MANAGER_OFFSET);
 GET_INSTANCE_DEFINE(AudioManager, SM_AUDIO_MANAGER_OFFSET);
@@ -59,4 +67,4 @@ PTR_GETTER_DEFINE(GameState, GetCurrentState, SM_CURRENT_GAME_STATE_OFFSET);
 
 StaticValues::PaintToolEraseLimiterType StaticValues::sm_paintToolEraseLimiter{};
 StaticValues::PaintToolPaintLimiterType StaticValues::sm_paintToolPaintLimiter{};
-StaticValues::BlockBuildLimiterType     StaticValues::sm_blockBuildLimiter{};
+StaticValues::BlockBuildLimiterType StaticValues::sm_blockBuildLimiter{};

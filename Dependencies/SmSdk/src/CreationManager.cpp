@@ -1,35 +1,40 @@
 #include "SmSdk/Creation/CreationManager.hpp"
+#include "SmSdk/config.hpp"
 
-BodyStructure* CreationManager::_getBodyData(int id)
+SMSDK_USE_NAMESPACE
+
+BodyState* CreationManager::_getBodyState(const std::uint32_t uId)
 {
-	auto v_iter = this->body_map.find(id);
-	if (v_iter == this->body_map.end())
+	auto iter = m_mapBodyStates.find(uId);
+	if (iter == m_mapBodyStates.end())
 		return nullptr;
 
-	return &v_iter->second;
+	return &iter->second;
 }
 
-JointStructure* CreationManager::_getJointData(int id)
+JointState* CreationManager::_getJointState(const std::uint32_t uId)
 {
-	auto v_iter = this->joint_map.find(id);
-	if (v_iter == this->joint_map.end())
+	auto iter = m_mapJointStates.find(uId);
+	if (iter == m_mapJointStates.end())
 		return nullptr;
 
-	return &v_iter->second;
+	return &iter->second;
 }
 
-BodyStructure* CreationManager::GetBodyData(int id)
+BodyState* CreationManager::GetBodyState(const std::uint32_t uId)
 {
-	CreationManager* v_mgr = CreationManager::GetInstance();
-	if (!v_mgr) return nullptr;
+	CreationManager* pCreationManager = CreationManager::GetInstance();
+	if (!pCreationManager)
+		return nullptr;
 
-	return v_mgr->_getBodyData(id);
+	return pCreationManager->_getBodyState(uId);
 }
 
-JointStructure* CreationManager::GetJointData(int id)
+JointState* CreationManager::GetJointState(const std::uint32_t uId)
 {
-	CreationManager* v_mgr = CreationManager::GetInstance();
-	if (!v_mgr) return nullptr;
+	CreationManager* pCreationManager = CreationManager::GetInstance();
+	if (!pCreationManager)
+		return nullptr;
 
-	return v_mgr->_getJointData(id);
+	return pCreationManager->_getJointState(uId);
 }

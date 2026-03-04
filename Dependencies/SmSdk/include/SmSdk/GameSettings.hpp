@@ -1,53 +1,56 @@
 #pragma once
 
+#include "SmSdk/config.hpp"
+
 #include <unordered_map>
 #include <string>
 
+SMSDK_BEGIN_NAMESPACE
+
 class GameSettings
 {
-public:
-	static GameSettings* GetInstance();
+	SDK_PUB static GameSettings* GetInstance();
 
-	inline float _getFloatSetting(const std::string& name, float default_value = 1.0f) const
+	SDK_PUB inline float _getFloatSetting(const std::string& name, float fDefaultValue = 1.0f) const
 	{
-		auto v_iter = m_mapFloatSettings.find(name);
-		if (v_iter != m_mapFloatSettings.end())
-			return v_iter->second;
+		auto iter = m_mapFloatSettings.find(name);
+		if (iter != m_mapFloatSettings.end())
+			return iter->second;
 
-		return default_value;
+		return fDefaultValue;
 	}
 
-	inline float _getMasterVolume() const
+	SDK_PUB inline float _getMasterVolume() const
 	{
 		return this->_getFloatSetting("MasterVolume", 1.0f);
 	}
 
-	inline static float GetEffectsVolume()
+	SDK_PUB inline static float GetEffectsVolume()
 	{
-		GameSettings* v_game_set = GameSettings::GetInstance();
-		if (!v_game_set) return 1.0f;
+		GameSettings* pGameSettings = GameSettings::GetInstance();
+		if (!pGameSettings)
+			return 1.0f;
 
-		const float v_master_volume = v_game_set->_getMasterVolume();
-		const float v_eff_volume = v_game_set->_getFloatSetting("EffectVolume");
+		const float fMasterVolume = pGameSettings->_getMasterVolume();
+		const float fEffectVolume = pGameSettings->_getFloatSetting("EffectVolume");
 
-		return v_eff_volume * v_master_volume;
+		return fEffectVolume * fMasterVolume;
 	}
 
-	inline static float GetMasterVolume()
+	SDK_PUB inline static float GetMasterVolume()
 	{
-		GameSettings* v_game_set = GameSettings::GetInstance();
-		if (!v_game_set) return 1.0f;
+		GameSettings* pGameSettings = GameSettings::GetInstance();
+		if (!pGameSettings)
+			return 1.0f;
 
-		return v_game_set->_getFloatSetting("MasterVolume", 1.0f);
+		return pGameSettings->_getFloatSetting("MasterVolume", 1.0f);
 	}
 
-public:
-	/* 0x0000 */ std::unordered_map<std::string, int> m_mapIntSettings;
-	/* 0x0040 */ std::unordered_map<std::string, float> m_mapFloatSettings;
-	/* 0x0080 */ std::unordered_map<std::string, std::string> m_mapStringSettings;
-	/* 0x00C0 */ __int32 m_appliedSettings;
-private:
-	/* 0x00C4 */ char pad_0xC4[0x4];
+	/* 0x0000 */ SDK_PUB std::unordered_map<std::string, int> m_mapIntSettings;
+	/* 0x0040 */ SDK_PUB std::unordered_map<std::string, float> m_mapFloatSettings;
+	/* 0x0080 */ SDK_PUB std::unordered_map<std::string, std::string> m_mapStringSettings;
+	/* 0x00C0 */ SDK_PUB std::int32_t m_appliedSettings;
+	/* 0x00C4 */ SDK_PRI char pad_0xC4[0x4];
 }; // Size: 0xC8
 
 static_assert(offsetof(GameSettings, GameSettings::m_mapIntSettings) == 0x0, "GameSettings::m_mapIntSettings: Incorrect offset");
@@ -56,3 +59,5 @@ static_assert(offsetof(GameSettings, GameSettings::m_mapStringSettings) == 0x80,
 static_assert(offsetof(GameSettings, GameSettings::m_appliedSettings) == 0xC0, "GameSettings::m_appliedSettings: Incorrect offset");
 
 static_assert(sizeof(GameSettings) == 0xC8, "GameSettings: Incorrect Size");
+
+SMSDK_END_NAMESPACE

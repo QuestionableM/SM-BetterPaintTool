@@ -2,38 +2,39 @@
 #include "SmSdk/Gui/GuiSystemManager.hpp"
 
 #include "SmSdk/unreferenced_params.hpp"
+#include "SmSdk/config.hpp"
+
+SMSDK_USE_NAMESPACE
 
 #if defined(SMSDK_ENABLE_MYGUI)
 
-OptionsSubMenuBase::OptionsSubMenuBase() :
-	m_pSubMenuWidget(nullptr),
-	m_pContainerHostPanel(nullptr),
-	m_pContainer(nullptr),
-	m_pScrollBar(nullptr),
-	m_itemSize(456, 40),
-	m_leftStackBox(m_itemSize),
-	m_rightStackBox(m_itemSize),
-	m_optionItems(),
-	m_scrollValue(0),
-	m_containerPos(0, 0)
-{}
+OptionsSubMenuBase::OptionsSubMenuBase() : m_pSubMenuWidget(nullptr),
+                                           m_pContainerHostPanel(nullptr),
+                                           m_pContainer(nullptr),
+                                           m_pScrollBar(nullptr),
+                                           m_itemSize(456, 40),
+                                           m_leftStackBox(m_itemSize),
+                                           m_rightStackBox(m_itemSize),
+                                           m_vecOptionItems(),
+                                           m_iScrollValue(0),
+                                           m_containerPos(0, 0) {}
 
-void OptionsSubMenuBase::onScrollChangePos(MyGUI::ScrollBar* caller, std::size_t pos)
+void OptionsSubMenuBase::onScrollChangePos(MyGUI::ScrollBar* pCaller, size_t iPos)
 {
-	SMSDK_UNREF(caller);
+	SMSDK_UNREF(pCaller);
 
-	m_containerPos.top = -int(pos);
+	m_containerPos.top = -int(iPos);
 	m_pContainer->setPosition(m_containerPos);
 	this->someFunc4();
 }
 
-void OptionsSubMenuBase::onScroll(MyGUI::Widget* caller, int scroll_val)
+void OptionsSubMenuBase::onScroll(MyGUI::Widget* pCaller, int iScrollVal)
 {
-	SMSDK_UNREF(caller);
+	SMSDK_UNREF(pCaller);
 
 	m_containerPos.top = GuiSystemManager::ProcessScroll(
-		m_scrollValue, m_itemSize.height, m_containerPos.top, scroll_val,
-		GuiSystemManager::GetInstance()->getOptionItemSize());
+	    m_iScrollValue, m_itemSize.height, m_containerPos.top, iScrollVal,
+	    GuiSystemManager::GetInstance()->getOptionItemSize());
 
 	m_pContainer->setPosition(m_containerPos);
 	if (m_pScrollBar)
@@ -43,36 +44,36 @@ void OptionsSubMenuBase::onScroll(MyGUI::Widget* caller, int scroll_val)
 
 void OptionsSubMenuBase::updateScrollArea()
 {
-	const MyGUI::IntSize v_left_sz = m_leftStackBox.m_pEmptyPanel->getSize();
-	const MyGUI::IntSize v_right_sz = m_rightStackBox.m_pEmptyPanel->getSize();
-	const int v_height = std::max(v_left_sz.height, v_right_sz.height);
+	const MyGUI::IntSize leftSize = m_leftStackBox.m_pEmptyPanel->getSize();
+	const MyGUI::IntSize rightSize = m_rightStackBox.m_pEmptyPanel->getSize();
+	const int iHeight = std::max(leftSize.height, rightSize.height);
 
-	m_pSubMenuWidget->findWidget("LeftStack")->setSize(v_left_sz);
-	m_pSubMenuWidget->findWidget("RightStack")->setSize(v_right_sz);
+	m_pSubMenuWidget->findWidget("LeftStack")->setSize(leftSize);
+	m_pSubMenuWidget->findWidget("RightStack")->setSize(rightSize);
 
-	m_pContainer->setSize(m_pContainer->getWidth(), v_height);
-	m_scrollValue = (v_height <= m_pContainerHostPanel->getHeight())
-		? 0 : v_height - m_pContainerHostPanel->getHeight();
+	m_pContainer->setSize(m_pContainer->getWidth(), iHeight);
+	m_iScrollValue = (iHeight <= m_pContainerHostPanel->getHeight())
+	    ? 0
+	    : iHeight - m_pContainerHostPanel->getHeight();
 
 	if (m_pContainerHostPanel->getVisible())
 	{
 		const float v_ratio = GuiSystemManager::GetInstance()->getOptionItemSize();
-		m_pScrollBar->setScrollRange(std::size_t(m_scrollValue) + 1);
+		m_pScrollBar->setScrollRange(size_t(m_iScrollValue) + 1);
 
-		const std::size_t v_page_val = std::size_t(float(m_itemSize.height) * v_ratio);
+		const size_t v_page_val = size_t(float(m_itemSize.height) * v_ratio);
 		m_pScrollBar->setScrollPage(v_page_val);
 		m_pScrollBar->setScrollWheelPage(v_page_val);
-		m_pScrollBar->setScrollViewPage(std::size_t(m_pContainerHostPanel->getWidth()));
+		m_pScrollBar->setScrollViewPage(size_t(m_pContainerHostPanel->getWidth()));
 
-		const int v_track_sz = int(float(m_pContainerHostPanel->getHeight())
-			* float(m_pScrollBar->getLineSize()) / float(v_height));
+		const int v_track_sz = int(float(m_pContainerHostPanel->getHeight()) * float(m_pScrollBar->getLineSize()) / float(iHeight));
 		m_pScrollBar->setTrackSize(v_track_sz);
 		m_pScrollBar->setScrollPosition(-m_pContainer->getTop());
 	}
 
-	if (-m_containerPos.top > m_scrollValue)
+	if (-m_containerPos.top > m_iScrollValue)
 	{
-		m_containerPos.top = -m_scrollValue;
+		m_containerPos.top = -m_iScrollValue;
 		m_pContainer->setPosition(m_containerPos);
 		this->someFunc4();
 	}
@@ -81,7 +82,7 @@ void OptionsSubMenuBase::updateScrollArea()
 void OptionsSubMenuBase::updateScrollAreaAndScrollBar()
 {
 	this->updateScrollArea();
-	m_pScrollBar->setVisible(m_scrollValue > 0);
+	m_pScrollBar->setVisible(m_iScrollValue > 0);
 }
 
 void OptionsSubMenuBase::clearSilent()
@@ -98,12 +99,12 @@ void OptionsSubMenuBase::clear()
 	this->updateScrollAreaAndScrollBar();
 }
 
-void OptionsSubMenuBase::initialize(MyGUI::Widget* parent)
+void OptionsSubMenuBase::initialize(MyGUI::Widget* pParent)
 {
 	m_pSubMenuWidget = MyGUI::LayoutManager::getInstance().loadLayout(
-		"$GAME_DATA/Gui/Layouts/Options/Options_SubMenu.layout",
-		"",
-		parent)[0];
+	    "$GAME_DATA/Gui/Layouts/Options/Options_SubMenu.layout",
+	    "",
+	    pParent)[0];
 
 	m_pContainerHostPanel = m_pSubMenuWidget->findWidget("ContainerHostPanel");
 
@@ -124,15 +125,15 @@ void OptionsSubMenuBase::initialize(MyGUI::Widget* parent)
 
 void OptionsSubMenuBase::cleanOptionItems()
 {
-	m_optionItems.clear();
+	m_vecOptionItems.clear();
 }
 
 void OptionsSubMenuBase::openMenu()
 {
-	for (auto& v_cur_item : m_optionItems)
+	for (auto& v_cur_item : m_vecOptionItems)
 		v_cur_item->update();
 
-	m_pScrollBar->setVisible(m_scrollValue > 0);
+	m_pScrollBar->setVisible(m_iScrollValue > 0);
 	m_pSubMenuWidget->setVisible(true);
 }
 

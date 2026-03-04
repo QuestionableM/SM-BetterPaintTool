@@ -48,6 +48,9 @@
     <ClCompile Include="Code\ColorPreset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\SmSdk\src\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Utils\ConColors.hpp">
@@ -207,6 +210,54 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Utils\Buffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\bullet_include.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\boost_include.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\AreaTriggerManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\ContainerManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\win_include.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\unreferenced_params.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\steamapi_include.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\PortalManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Pathfinder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\NetObjManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\offsets.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\mygui_include.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\jsoncpp_include.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\GameState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\GameSettings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\fmod_include.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

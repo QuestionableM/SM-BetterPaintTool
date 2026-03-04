@@ -17,22 +17,22 @@ static bool ms_mhHooksAttached = false;
 #define DEFINE_HOOK(address, detour, original) \
 	MH_CreateHook((LPVOID)(v_mod_base + address), (LPVOID)detour, (LPVOID*)&original)
 
-#if _SM_VERSION_NUM == 073776
+#if _SM_VERSION_NUM == 0x074778 || _SM_VERSION_NUM == 0x073776
 #	define BPT_PROCESS_INPUTS_FUNC 0x53BD00
 #	define BPT_GUI_INITIALIZE_FUNC 0x3C0780
 #	define BPT_INITIALIZE_FUNC 0x3DF8D0
 #	define BPT_UPDATE_FUNC 0x3DEE00
-#elif _SM_VERSION_NUM == 072775
+#elif _SM_VERSION_NUM == 0x072775
 #	define BPT_PROCESS_INPUTS_FUNC 0x53BD80
 #	define BPT_GUI_INITIALIZE_FUNC 0x3C0800
 #	define BPT_INITIALIZE_FUNC 0x3DF950
 #	define BPT_UPDATE_FUNC 0x3DEE80
-#elif _SM_VERSION_NUM == 071772
+#elif _SM_VERSION_NUM == 0x071772
 #	define BPT_PROCESS_INPUTS_FUNC 0x53BD60
 #	define BPT_GUI_INITIALIZE_FUNC 0x3C07E0
 #	define BPT_INITIALIZE_FUNC 0x3DF930
 #	define BPT_UPDATE_FUNC 0x3DEE60
-#elif _SM_VERSION_NUM == 070771
+#elif _SM_VERSION_NUM == 0x070771
 #	define BPT_PROCESS_INPUTS_FUNC 0x53BD60
 #	define BPT_GUI_INITIALIZE_FUNC 0x3C07E0
 #	define BPT_INITIALIZE_FUNC 0x3DF930
@@ -48,11 +48,11 @@ void process_attach(HMODULE hmod)
 {
 	AttachDebugConsole();
 
-	if (!SmSdk::CheckTimestamp(_SM_TIMESTAMP_073_776))
+	if (!SmSdk::CheckTimestamp(_SM_TIMESTAMP_074_778))
 	{
 		MessageBoxA(
 			NULL,
-			"Your game version is not supported by Better Paint Tool. The current version of the mod has been built for Scrap Mechanic 0.7.3.776\n\nPress OK to continue loading without the mod.",
+			"Your game version is not supported by Better Paint Tool. The current version of the mod has been built for Scrap Mechanic 0.7.4.778\n\nPress OK to continue loading without the mod.",
 			"Unsupported Version",
 			MB_ICONWARNING);
 		return;
@@ -74,9 +74,9 @@ void process_attach(HMODULE hmod)
 	if (DEFINE_HOOK(BPT_INITIALIZE_FUNC, BetterPaintTool::h_initialize, BetterPaintTool::o_initialize) != MH_OK) return;
 	if (DEFINE_HOOK(BPT_UPDATE_FUNC, BetterPaintTool::h_update, BetterPaintTool::o_update) != MH_OK) return;
 
-	StaticValues::sm_paintToolPaintLimiter = 63;
-	StaticValues::sm_paintToolEraseLimiter = 63;
-	StaticValues::sm_blockBuildLimiter = 63;
+	SM::StaticValues::sm_paintToolPaintLimiter = 63;
+	SM::StaticValues::sm_paintToolEraseLimiter = 63;
+	SM::StaticValues::sm_blockBuildLimiter = 63;
 
 	ms_mhHooksAttached = MH_EnableHook(MH_ALL_HOOKS) == MH_OK;
 }

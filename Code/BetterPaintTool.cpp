@@ -33,16 +33,16 @@ BetterPaintTool::t_update_sig BetterPaintTool::o_update = nullptr;
 
 static bool g_isPaintToolHoldingObject = false;
 
-void BetterPaintTool::h_processInputs(InputManager* self)
+void BetterPaintTool::h_processInputs(SM::InputManager* self)
 {
 	//Prevent the game from switching the tool while painting/erasing
 	if (g_isPaintToolHoldingObject)
 	{
 		//Filter out all the scroll events
-		for (auto i = self->m_inputQueue.begin(); i != self->m_inputQueue.end();)
+		for (auto i = self->m_deqInputQueue.begin(); i != self->m_deqInputQueue.end();)
 		{
-			if (i->event_type == InputEventType_MouseScroll)
-				i = self->m_inputQueue.erase(i);
+			if (i->m_eventType == SM::InputEventType_MouseScroll)
+				i = self->m_deqInputQueue.erase(i);
 			else
 				i++;
 		}
@@ -71,7 +71,7 @@ bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 			{
 				ColorPresetStorage::LoadFromFile();
 
-				GuiBase* v_pGui = self->m_pGuiInterface->m_pGuiBase.get();
+				SM::GuiBase* v_pGui = self->m_pGuiInterface->m_pGuiBase.get();
 				reinterpret_cast<BetterPaintToolGui*>(v_pGui)->initParams(self);
 			}
 		);
@@ -82,13 +82,13 @@ bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 				// Every time we close the paint tool we save the custom presets to the file
 				//ColorPresetStorage::SaveToFile();
 
-				const Color v_newColor = ColorPresetStorage::GetCurrentPreset().colors[idx];
-				const Color v_currentColor = self->m_pNetworkData->paint_color;
+				const SM::Color v_newColor = ColorPresetStorage::GetCurrentPreset().colors[idx];
+				const SM::Color v_currentColor = self->m_pNetworkData->m_paintColor;
 
 				if (v_currentColor.data != v_newColor.data)
 				{
 					self->setColor(v_newColor);
-					AudioManager::PlaySound("PaintTool - ColorPick");
+					SM::AudioManager::PlaySound("PaintTool - ColorPick");
 				}
 
 				self->m_pGuiInterface->close();
@@ -113,16 +113,16 @@ bool BetterPaintTool::h_initialize(BetterPaintTool* self)
 struct ColorIndexRayResult : public btCollisionWorld::RayResultCallback
 {
 	int m_triangleIndex = -1;
-	Character* m_charToIgnore = nullptr;
+	SM::Character* m_charToIgnore = nullptr;
 
 	bool checkCollisionAllowed(const btCollisionObject* obj) const
 	{
-		PhysicsProxy* v_pProxy = reinterpret_cast<PhysicsProxy*>(obj->getUserPointer());
+		SM::PhysicsProxy* v_pProxy = reinterpret_cast<SM::PhysicsProxy*>(obj->getUserPointer());
 		if (!v_pProxy) return false;
 
-		if (v_pProxy->getProxyType() == PhysicsProxyType_Character)
+		if (v_pProxy->getProxyType() == SM::PhysicsProxyType_Character)
 		{
-			Character* v_cur_char = CharacterManager::GetCharacter(obj->getUserIndex());
+			SM::Character* v_cur_char = SM::CharacterManager::GetCharacter(obj->getUserIndex());
 			return v_cur_char != m_charToIgnore;
 		}
 
@@ -149,28 +149,29 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 	BetterPaintTool::o_update(self, dt);
 
 	//The game doesn't like it when multiple animations use the same animation file
-	if (self->m_fpAnims.current_anim != "color_picker" && self->m_fpAnims.current_anim != "color_picker_end")
+	if (self->m_fpAnims.m_currentAnim != "color_picker" &&
+		self->m_fpAnims.m_currentAnim != "color_picker_end")
 	{
 		self->m_fpAnims.removeAnimation("color_picker");
 		self->m_fpAnims.removeAnimation("color_picker_end");
 	}
 
-	if (!self->is_equipped())
+	if (!self->isEquipped())
 		return;
 
-	MyPlayer* v_pPlayer = MyPlayer::GetInstance();
-	if (self->tool->owner_id != v_pPlayer->player->id)
+	SM::MyPlayer* v_pPlayer = SM::MyPlayer::GetInstance();
+	if (self->m_pTool->m_iOwnerId != v_pPlayer->m_player->m_iId)
 		return;
 
 	self->updateSelectionData(self->m_paintSelection);
 	self->updateSelectionData(self->m_eraseSelection);
 
-	if (!self->isErasingOrPainting() && InputManager::IsMouseButtonPressed(EMouseButton_Middle))
+	if (!self->isErasingOrPainting() && SM::InputManager::IsMouseButtonPressed(SM::EMouseButton_Middle))
 	{
-		Physics* v_pPhysics = Physics::GetInstance();
+		SM::Physics* v_pPhysics = SM::Physics::GetInstance();
 		if (!v_pPhysics) return;
 
-		btCollisionWorld* v_pCollWorld = v_pPhysics->physics_base->collision_world2;
+		btCollisionWorld* v_pCollWorld = v_pPhysics->m_pPhysicsBase->m_pCollisionWorld2;
 		if (!v_pCollWorld) return;
 
 		const btVector3 v_ray_start(v_pPlayer->camera.position.x,
@@ -180,8 +181,11 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 		const btVector3 v_ray_end = v_ray_start + v_direction * 7.0f;
 
 		ColorIndexRayResult v_callback;
-		v_callback.m_collisionFilterMask = PhysicsFilterMask_DynamicBody
-			| PhysicsFilterMask_StaticBody | PhysicsFilterMask_Character | PhysicsFilterMask_Harvestable | PhysicsFilterMask_Joints;
+		v_callback.m_collisionFilterMask = SM::PhysicsFilterMask_DynamicBody
+			| SM::PhysicsFilterMask_StaticBody
+			| SM::PhysicsFilterMask_Character
+			| SM::PhysicsFilterMask_Harvestable
+			| SM::PhysicsFilterMask_Joints;
 
 		v_callback.m_charToIgnore = v_pPlayer->getCharacter();
 		v_callback.m_collisionFilterGroup = -1;
@@ -190,7 +194,7 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 		v_pCollWorld->rayTest(v_ray_start, v_ray_end, v_callback);
 		if (v_callback.hasHit())
 		{
-			Color v_obj_color;
+			SM::Color v_obj_color;
 
 			if (BetterPaintTool::getColorFromCollisionObject(
 				v_callback.m_collisionObject, v_callback.m_triangleIndex, v_obj_color))
@@ -200,8 +204,8 @@ void BetterPaintTool::h_update(BetterPaintTool* self, float dt)
 					(std::uint32_t)v_obj_color.r, (std::uint32_t)v_obj_color.g, (std::uint32_t)v_obj_color.b,
 					(std::uint32_t)v_obj_color.r, (std::uint32_t)v_obj_color.g, (std::uint32_t)v_obj_color.b);
 
-				InGameGuiManager::DisplayAlertText(std::string(v_buffer, v_buffer_sz), 2.0f);
-				AudioManager::PlaySound("PaintTool - ColorPick");
+				SM::InGameGuiManager::DisplayAlertText(std::string(v_buffer, v_buffer_sz), 2.0f);
+				SM::AudioManager::PlaySound("PaintTool - ColorPick");
 
 				self->m_fpAnims.resetAnimation("pick");
 				self->m_fpAnims.addNewAnimation("color_picker", "painttool_colorpick_idle", "color_picker_end", 0.0f, 1.0f, 5.0f);
@@ -221,7 +225,7 @@ std::uint32_t BetterPaintTool::getLimiterAxisIndex(const DirectX::XMINT3& limite
 		+ (std::uint32_t(std::abs(limiter.z)) * 3);
 }
 
-void BetterPaintTool::updateSelectionData(PaintToolSelectionData& sel_data)
+void BetterPaintTool::updateSelectionData(SM::PaintToolSelectionData& sel_data)
 {
 	if (!this->isObjectSelected(sel_data))
 		return;
@@ -229,7 +233,7 @@ void BetterPaintTool::updateSelectionData(PaintToolSelectionData& sel_data)
 	g_isPaintToolHoldingObject = true;
 	const std::uint32_t v_limiter_idx = this->getLimiterAxisIndex(sel_data.m_selectionBoxLimiter);
 
-	const std::int32_t v_scroll_val = InputManager::GetMouseScrollDelta();
+	const std::int32_t v_scroll_val = SM::InputManager::GetMouseScrollDelta();
 	if (v_scroll_val != 0)
 	{
 		const std::int32_t v_scroll_add = std::abs(v_scroll_val) / 130;
@@ -239,7 +243,7 @@ void BetterPaintTool::updateSelectionData(PaintToolSelectionData& sel_data)
 		if (v_limiter_idx > 0 && v_limiter_idx <= 3)
 		{
 			const std::uint32_t v_actual_idx = v_limiter_idx - 1;
-			const std::int32_t v_limiter_size = StaticValues::sm_paintToolPaintLimiter;
+			const std::int32_t v_limiter_size = SM::StaticValues::sm_paintToolPaintLimiter;
 
 			std::int32_t* v_max_arr = reinterpret_cast<std::int32_t*>(&sel_data.m_selectionBoxMax);
 			std::int32_t* v_min_arr = reinterpret_cast<std::int32_t*>(&sel_data.m_selectionBoxMin);
@@ -284,16 +288,16 @@ void BetterPaintTool::updateSelectionData(PaintToolSelectionData& sel_data)
 	const int v_buff_sz = sprintf_s(v_text_buffer, "<p textShadow='false' bg='gui_keybinds_bg' color='#ffffff' spacing='7'>Selection size: %ix%ix%i</p>",
 		v_bBoxSizeInt.x, v_bBoxSizeInt.y, v_bBoxSizeInt.z);
 	
-	InGameGuiManager::SetInteractionText({ std::string(v_text_buffer, v_buff_sz), "" });
-	InGameGuiManager::SetInteractionText({
+	SM::InGameGuiManager::SetInteractionText({ std::string(v_text_buffer, v_buff_sz), "" });
+	SM::InGameGuiManager::SetInteractionText({
 		"<img bg='gui_keybinds_bg' spacing='0'>icon_keybinds_scroll_up.png</img>",
 		"<p textShadow='true' bg='gui_keybinds_bg' color='#ffffff' spacing='15'>To adjust selection depth</p>"
 	});
 }
 
-bool BetterPaintTool::isObjectSelected(const PaintToolSelectionData& sel_data)
+bool BetterPaintTool::isObjectSelected(const SM::PaintToolSelectionData& sel_data)
 {
-	return sel_data.m_objectId != -1 && sel_data.m_objectType > 0;
+	return sel_data.m_iObjectId != -1 && sel_data.m_iObjectType > 0;
 }
 
 bool BetterPaintTool::isErasingOrPainting() const
@@ -302,19 +306,19 @@ bool BetterPaintTool::isErasingOrPainting() const
 		|| this->isObjectSelected(m_eraseSelection);
 }
 
-Color BetterPaintTool::getInterpolatedColor()
+SM::Color BetterPaintTool::getInterpolatedColor()
 {
-	const float v_lerp_factor = std::min(std::max((this->time_since_last_change - 0.3f) * 2.22f, 0.0f), 1.0f);
+	const float v_lerp_factor = std::min(std::max((this->m_fTimeSinceLastChange - 0.3f) * 2.22f, 0.0f), 1.0f);
 
-	const float v_prev_r = this->prev_paint_color.getFloat(0);
-	const float v_prev_g = this->prev_paint_color.getFloat(1);
-	const float v_prev_b = this->prev_paint_color.getFloat(2);
+	const float v_prev_r = this->m_prevPaintColor.getFloat(0);
+	const float v_prev_g = this->m_prevPaintColor.getFloat(1);
+	const float v_prev_b = this->m_prevPaintColor.getFloat(2);
 
-	const float v_cur_r = this->visualization_color.getFloat(0);
-	const float v_cur_g = this->visualization_color.getFloat(1);
-	const float v_cur_b = this->visualization_color.getFloat(2);
+	const float v_cur_r = this->m_visualizationColor.getFloat(0);
+	const float v_cur_g = this->m_visualizationColor.getFloat(1);
+	const float v_cur_b = this->m_visualizationColor.getFloat(2);
 
-	Color v_output;
+	SM::Color v_output;
 	v_output.setFloat(0, MathUtil::lerp(v_prev_r, v_cur_r, v_lerp_factor));
 	v_output.setFloat(1, MathUtil::lerp(v_prev_g, v_cur_g, v_lerp_factor));
 	v_output.setFloat(2, MathUtil::lerp(v_prev_b, v_cur_b, v_lerp_factor));
@@ -323,48 +327,48 @@ Color BetterPaintTool::getInterpolatedColor()
 	return v_output;
 }
 
-void BetterPaintTool::setColor(Color color)
+void BetterPaintTool::setColor(SM::Color color)
 {
-	if (m_pNetworkData->paint_color == color)
+	if (m_pNetworkData->m_paintColor == color)
 		return;
 
-	m_pNetworkData->paint_color = color;
+	m_pNetworkData->m_paintColor = color;
 	m_pNetworkData->m_bDataChanged = true;
 	m_pNetworkData->m_bColorUpdated = true;
 
-	this->prev_paint_color = this->getInterpolatedColor();
-	this->visualization_color = m_pNetworkData->paint_color;
-	this->time_since_last_change = 0.3f;
-	this->paint_color = m_pNetworkData->paint_color;
+	this->m_prevPaintColor = this->getInterpolatedColor();
+	this->m_visualizationColor = m_pNetworkData->m_paintColor;
+	this->m_fTimeSinceLastChange = 0.3f;
+	this->m_paintColor = m_pNetworkData->m_paintColor;
 }
 
-bool BetterPaintTool::getColorFromShape(int obj_idx, int tri_idx, Color& out_color)
+bool BetterPaintTool::getColorFromShape(int obj_idx, int tri_idx, SM::Color& out_color)
 {
 	if (tri_idx == -1) return false;
 
-	BodyStructure* v_body_data = CreationManager::GetBodyData(obj_idx);
-	if (!v_body_data) return false;
+	SM::BodyState* v_pBodyState = SM::CreationManager::GetBodyState(obj_idx);
+	if (!v_pBodyState) return false;
 
-	RigidBody* v_pRigidBody = v_body_data->body.get();
+	SM::RigidBody* v_pRigidBody = v_pBodyState->m_pBody.get();
 	if (!v_pRigidBody) return false;
 
-	ChildShape* v_pChild = v_pRigidBody->getChildShape(tri_idx);
+	SM::ChildShape* v_pChild = v_pRigidBody->getChildShape(tri_idx);
 	if (!v_pChild) return false;
 
 	out_color = v_pChild->getColor();
 	return true;
 }
 
-bool BetterPaintTool::getColorFromJoint(PhysicsProxy* proxy, int tri_idx, Color& out_color)
+bool BetterPaintTool::getColorFromJoint(SM::PhysicsProxy* proxy, int tri_idx, SM::Color& out_color)
 {
-	BodyJointPhysicsProxy* v_pJointProxy = reinterpret_cast<BodyJointPhysicsProxy*>(proxy);
+	SM::BodyJointPhysicsProxy* v_pJointProxy = reinterpret_cast<SM::BodyJointPhysicsProxy*>(proxy);
 	if (tri_idx < 0 || tri_idx > v_pJointProxy->m_compoundShape.getNumChildShapes())
 		return false;
 
 	btCollisionShape* v_pJointShape = v_pJointProxy->m_compoundShape.getChildShape(tri_idx);
 	if (!v_pJointShape) return false;
 
-	Joint* v_pJoint = reinterpret_cast<Joint*>(v_pJointShape->getUserPointer());
+	SM::Joint* v_pJoint = reinterpret_cast<SM::Joint*>(v_pJointShape->getUserPointer());
 	if (!v_pJoint) return false;
 
 	out_color = v_pJoint->m_color;
@@ -373,9 +377,9 @@ bool BetterPaintTool::getColorFromJoint(PhysicsProxy* proxy, int tri_idx, Color&
 	return true;
 }
 
-bool BetterPaintTool::getColorFromCharacter(int char_idx, Color& out_color)
+bool BetterPaintTool::getColorFromCharacter(int char_idx, SM::Color& out_color)
 {
-	Character* v_char_data = CharacterManager::GetCharacter(char_idx);
+	SM::Character* v_char_data = SM::CharacterManager::GetCharacter(char_idx);
 	if (!v_char_data) return false;
 
 	out_color.setFloat(0, v_char_data->m_color.x);
@@ -386,38 +390,38 @@ bool BetterPaintTool::getColorFromCharacter(int char_idx, Color& out_color)
 	return true;
 }
 
-bool BetterPaintTool::getColorFromHarvestable(int hvs_idx, Color& out_color)
+bool BetterPaintTool::getColorFromHarvestable(int hvs_idx, SM::Color& out_color)
 {
-	Harvestable* v_hvs_data = HarvestableManager::GetHarvestable(hvs_idx);
+	SM::Harvestable* v_hvs_data = SM::HarvestableManager::GetHarvestable(hvs_idx);
 	if (!v_hvs_data) return false;
 
-	out_color.setFloat(0, v_hvs_data->color.x);
-	out_color.setFloat(1, v_hvs_data->color.y);
-	out_color.setFloat(2, v_hvs_data->color.z);
+	out_color.setFloat(0, v_hvs_data->m_color.x);
+	out_color.setFloat(1, v_hvs_data->m_color.y);
+	out_color.setFloat(2, v_hvs_data->m_color.z);
 	out_color.a = 0xFF;
 
 	return true;
 }
 
 bool BetterPaintTool::getColorFromCollisionObject(
-	const btCollisionObject* obj, int tri_idx, Color& out_color)
+	const btCollisionObject* obj, int tri_idx, SM::Color& out_color)
 {
 	if (!obj) return false;
 
-	PhysicsProxy* v_pProxy = reinterpret_cast<PhysicsProxy*>(obj->getUserPointer());
+	SM::PhysicsProxy* v_pProxy = reinterpret_cast<SM::PhysicsProxy*>(obj->getUserPointer());
 	if (!v_pProxy) return false;
 
 	switch (v_pProxy->getProxyType())
 	{
-	case PhysicsProxyType_Shape:
+	case SM::PhysicsProxyType_Shape:
 		return BetterPaintTool::getColorFromShape(obj->getUserIndex(), tri_idx, out_color);
-	case PhysicsProxyType_Joint:
+	case SM::PhysicsProxyType_Joint:
 		return BetterPaintTool::getColorFromJoint(v_pProxy, tri_idx, out_color);
-	case PhysicsProxyType_Character:
+	case SM::PhysicsProxyType_Character:
 		return BetterPaintTool::getColorFromCharacter(obj->getUserIndex(), out_color);
-	case PhysicsProxyType_Harvestable:
+	case SM::PhysicsProxyType_Harvestable:
 		return BetterPaintTool::getColorFromHarvestable(
-			reinterpret_cast<HarvestablePhysicsProxy*>(v_pProxy)->harvestable_id, out_color);
+			reinterpret_cast<SM::HarvestablePhysicsProxy*>(v_pProxy)->m_iHarvestableId, out_color);
 	}
 
 	return false;

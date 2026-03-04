@@ -1,48 +1,53 @@
 #include "SmSdk/DirectoryManager.hpp"
+#include "SmSdk/config.hpp"
 
-bool DirectoryManager::get_replacement(const std::string& key, std::string& replacement)
+SMSDK_USE_NAMESPACE
+
+bool DirectoryManager::getReplacement(const std::string& key, std::string& replacement)
 {
-	auto v_iter = content_key_to_path_list.find(key);
-	if (v_iter == content_key_to_path_list.end())
+	auto iter = m_mapContentKeyToPathList.find(key);
+	if (iter == m_mapContentKeyToPathList.end())
 		return false;
 
-	replacement = v_iter->second;
+	replacement = iter->second;
 	return true;
 }
 
-bool DirectoryManager::replace_path_r(std::string& path)
+bool DirectoryManager::replacePathR(std::string& path)
 {
 	if (path.empty() || path[0] != L'$')
 		return false;
 
-	const char* v_key_beg = path.data();
-	const char* v_key_ptr = std::strchr(v_key_beg, L'/');
-	if (v_key_ptr == nullptr)
+	const char* pBegin = path.data();
+	const char* pKey = std::strchr(pBegin, L'/');
+	if (pKey == nullptr)
 		return false;
 
-	const std::size_t v_key_idx = v_key_ptr - v_key_beg;
+	const size_t iKeyIdx = pKey - pBegin;
 
-	const std::string v_key_chunk = path.substr(0, v_key_idx);
-	const auto v_iter = content_key_to_path_list.find(v_key_chunk);
-	if (v_iter == content_key_to_path_list.end())
+	const std::string keyChunk = path.substr(0, iKeyIdx);
+	const auto iter = m_mapContentKeyToPathList.find(keyChunk);
+	if (iter == m_mapContentKeyToPathList.end())
 		return false;
 
-	path = (v_iter->second + path.substr(v_key_idx));
+	path = (iter->second + path.substr(iKeyIdx));
 	return true;
 }
 
 bool DirectoryManager::ReplacePathR(std::string& path)
 {
-	DirectoryManager* v_dir_mgr = DirectoryManager::GetInstance();
-	if (!v_dir_mgr) return false;
+	DirectoryManager* pDirectoryManager = DirectoryManager::GetInstance();
+	if (!pDirectoryManager)
+		return false;
 
-	return v_dir_mgr->replace_path_r(path);
+	return pDirectoryManager->replacePathR(path);
 }
 
 bool DirectoryManager::GetReplacement(const std::string& key, std::string& replacement)
 {
-	DirectoryManager* v_dir_mgr = DirectoryManager::GetInstance();
-	if (!v_dir_mgr) return false;
+	DirectoryManager* pDirectoryManager = DirectoryManager::GetInstance();
+	if (!pDirectoryManager)
+		return false;
 
-	return v_dir_mgr->get_replacement(key, replacement);
+	return pDirectoryManager->getReplacement(key, replacement);
 }

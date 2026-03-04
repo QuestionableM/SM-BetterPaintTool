@@ -8,14 +8,21 @@
 #else
 namespace FMOD
 {
-	namespace Studio
-	{
-		class System {};
-	}
-
-	class System {};
+namespace Studio
+{
+// This is a stub, please define `SMSDK_ENABLE_FMOD` to use FMOD
+class System
+{
+};
 }
 
+// This is a stub, please define `SMSDK_ENABLE_FMOD` to use FMOD
+class System
+{
+};
+}
+
+// This is a stub, please define `SMSDK_ENABLE_FMOD` to use FMOD
 struct FMOD_ADVANCEDSETTINGS
 {
 private:

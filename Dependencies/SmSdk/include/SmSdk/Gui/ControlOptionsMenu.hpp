@@ -1,24 +1,25 @@
 #pragma once
 
-#include "OptionsSubMenuBase.hpp"
+#include "SmSdk/Gui/OptionsSubMenuBase.hpp"
 
 #include "SmSdk/Util/Memory.hpp"
 #include "SmSdk/offsets.hpp"
 
+SMSDK_BEGIN_NAMESPACE
+
 class ControlOptionsMenu : public OptionsSubMenuBase
 {
-public:
-	ControlOptionsMenu()
+	SDK_PUB ControlOptionsMenu()
 	{
 		using fSelfConstructor = void (*)(ControlOptionsMenu*);
 		Memory::Read<fSelfConstructor>(SM_CONSTRUCTOR_CONTROL_OPTIONS_MENU_OFFSET)(this);
 	}
 
-	virtual ~ControlOptionsMenu() = default;
-	void restoreDefaults() override { /* implemented by the game */ }
-
-private:
-	/* 0x0168 */ char pad_0x168[0x20];
+	SDK_PUB virtual ~ControlOptionsMenu() = default;
+	SDK_PUB void restoreDefaults() override { /* implemented by the game */ }
+	/* 0x0168 */ SDK_PRI char pad_0x168[0x20];
 }; // Size: 0x188
 
 static_assert(sizeof(ControlOptionsMenu) == 0x188, "ControlOptionsMenu: Incorrect Size");
+
+SMSDK_END_NAMESPACE

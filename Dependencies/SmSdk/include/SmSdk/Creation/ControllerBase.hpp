@@ -1,13 +1,16 @@
 #pragma once
 
 #include "SmSdk/Base/NetObj.hpp"
+#include "SmSdk/Creation/ChildShape.hpp"
 
 #include <memory>
 #include <list>
 #include <string>
 #include <map>
 
-enum ControllerType : std::uint32_t
+SMSDK_BEGIN_NAMESPACE
+
+enum ControllerType : uint32_t
 {
 	ControllerType_Null = 0x0,
 	ControllerType_ElectricMotor = 0x1,
@@ -35,29 +38,22 @@ enum ControllerType : std::uint32_t
 
 class ControllerBase : public NetObj
 {
-private:
-	/* 0x0028 */ char pad_0x28[0x10];
-public:
-	/* 0x0038 */ ControllerType controller_type;
-private:
-	/* 0x003C */ char pad_0x3C[0xC];
-public:
-	/* 0x0048 */ std::shared_ptr<class ChildShape> parent_shape;
-private:
-	/* 0x0058 */ char pad_0x58[0x10];
-public:
-	/* 0x0068 */ __int32 max_parent_count;
-private:
-	/* 0x006C */ char pad_0x6C[0x14];
-public:
-	/* 0x0080 */ std::shared_ptr<class GuiInterface> gui_interface;
-	/* 0x0090 */ std::list<std::shared_ptr<ControllerBase>> parents;
-	/* 0x00A0 */ std::list<std::shared_ptr<class PistonController>> pistons;
-	/* 0x00B0 */ std::list<std::shared_ptr<class Joint>> joints;
-	/* 0x00C0 */ std::map<std::string, class ControllerBoneData> animated_bones;
-	/* 0x00D0 */ bool update_flag;
-private:
-	/* 0x00D1 */ char pad_0xD1[0xF];
+	/* 0x0028 */ SDK_PRI char pad_0x28[0x10];
+	/* 0x0038 */ SDK_PUB ControllerType m_controllerType;
+	/* 0x003C */ SDK_PRI char pad_0x3C[0xC];
+	/* 0x0048 */ SDK_PUB std::shared_ptr<ChildShape> m_pParentShape;
+	/* 0x0058 */ SDK_PRI char pad_0x58[0x10];
+	/* 0x0068 */ SDK_PUB std::int32_t m_iMaxParentCount;
+	/* 0x006C */ SDK_PRI char pad_0x6C[0x14];
+	/* 0x0080 */ SDK_PUB std::shared_ptr<class GuiInterface> m_pGuiInterface;
+	/* 0x0090 */ SDK_PUB std::list<std::shared_ptr<ControllerBase>> m_listParents;
+	/* 0x00A0 */ SDK_PUB std::list<std::shared_ptr<class Controller>> m_listChildControllers;
+	/* 0x00B0 */ SDK_PUB std::list<std::shared_ptr<class Joint>> m_listChildJoints;
+	/* 0x00C0 */ SDK_PUB std::map<std::string, class ControllerBoneData> m_mapAnimatedBones;
+	/* 0x00D0 */ SDK_PUB bool m_bUpdateFlag;
+	/* 0x00D1 */ SDK_PRI char pad_0xD1[0xF];
 }; // Size: 0xE0
 
 static_assert(sizeof(ControllerBase) == 0xE0, "ControllerBase: Incorrect Size");
+
+SMSDK_END_NAMESPACE

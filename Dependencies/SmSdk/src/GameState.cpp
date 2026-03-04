@@ -1,26 +1,30 @@
 #include "SmSdk/GameState.hpp"
+#include "SmSdk/config.hpp"
 
-bool GameState::IsCurrentGameState(EGameStateType gs_type)
+SMSDK_USE_NAMESPACE
+
+bool GameState::IsCurrentGameState(EGameStateType gsType)
 {
-	GameState* v_cur_state = GameState::GetCurrentState();
-	if (!v_cur_state) return false;
+	GameState* pCurrentState = GameState::GetCurrentState();
+	if (!pCurrentState)
+		return false;
 
-	return v_cur_state->getGameStateType() == gs_type;
+	return pCurrentState->getGameStateType() == gsType;
 }
 
-bool GameState::IsCurrentOrNextGameState(EGameStateType gs_type)
+bool GameState::IsCurrentOrNextGameState(EGameStateType gsType)
 {
-	GameState* v_cur_state = GameState::GetCurrentState();
-	if (!v_cur_state) return false;
+	GameState* pCurrentState = GameState::GetCurrentState();
+	if (!pCurrentState)
+		return false;
 
-	if (v_cur_state->getGameStateType() == gs_type)
+	if (pCurrentState->getGameStateType() == gsType)
 		return true;
 
-	if (v_cur_state->getGameStateType() == GameState_LoadState)
+	if (pCurrentState->getGameStateType() == GameState_LoadState)
 	{
-		LoadState* v_load_state = reinterpret_cast<LoadState*>(v_cur_state);
-		if (v_load_state->m_pNextState
-			&& v_load_state->m_pNextState->getGameStateType() == gs_type)
+		LoadState* pLoadState = reinterpret_cast<LoadState*>(pCurrentState);
+		if (pLoadState->m_pNextState && pLoadState->m_pNextState->getGameStateType() == gsType)
 		{
 			return true;
 		}
@@ -31,11 +35,12 @@ bool GameState::IsCurrentOrNextGameState(EGameStateType gs_type)
 
 SteamNetworkClient* GameState::GetSteamNetworkClient()
 {
-	GameState* v_cur_state = GameState::GetCurrentState();
-	if (!v_cur_state) return nullptr;
+	GameState* pCurrentState = GameState::GetCurrentState();
+	if (!pCurrentState)
+		return nullptr;
 
-	if (v_cur_state->getGameStateType() == GameState_PlayState)
-		return reinterpret_cast<PlayState*>(v_cur_state)->steam_network_client.get();
+	if (pCurrentState->getGameStateType() == GameState_PlayState)
+		return reinterpret_cast<PlayState*>(pCurrentState)->m_pSteamNetworkClient.get();
 
 	return nullptr;
 }

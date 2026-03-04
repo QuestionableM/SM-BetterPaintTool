@@ -12,7 +12,7 @@ struct SliderData
 
 class BetterPaintTool;
 
-class BetterPaintToolGui : public PaintToolGui
+class BetterPaintToolGui : public SM::PaintToolGui
 {
 public:
 	using t_init_func_sig = void(*)(BetterPaintToolGui*);
@@ -48,9 +48,9 @@ public:
 	//Data getters
 	void getSliderData(MyGUI::Widget* slider_parent, SliderData* p_sliderData);
 	MyGUI::ScrollBar* getScrollBar(const std::string& name);
-	Color getColorFromSliders();
-	Color getColorFromHsvPicker();
-	static Color getColorPickerColorTransformed(float uv_x, float uv_y, Color col);
+	SM::Color getColorFromSliders();
+	SM::Color getColorFromHsvPicker();
+	static SM::Color getColorPickerColorTransformed(float uv_x, float uv_y, SM::Color col);
 	MyGUI::Widget* getPresetColorsWnd();
 	MyGUI::Widget* getCustomColorWnd();
 	MyGUI::Widget* getColorPicker();
@@ -78,10 +78,10 @@ public:
 	
 	//Update functions
 	void updateHexInputParameter(const std::string& newVal);
-	void updateHexValueFromColor(Color col);
-	void updateSlidersFromColor(Color col);
-	void updateHsvAndColorPickersFromColor(Color col);
-	void updateTextureGradient(Color color);
+	void updateHexValueFromColor(SM::Color col);
+	void updateSlidersFromColor(SM::Color col);
+	void updateHsvAndColorPickersFromColor(SM::Color col);
+	void updateTextureGradient(SM::Color color);
 	void updateCurrentPresetFromIndex();
 	void updateColorPaletteFromIndex();
 	void updateHelperTextState(bool showCannotEditMsg);

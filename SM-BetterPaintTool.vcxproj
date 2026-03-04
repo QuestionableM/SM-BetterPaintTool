@@ -142,6 +142,7 @@
     <ClCompile Include="Code\BetterPaintTool.cpp" />
     <ClCompile Include="Code\BetterPaintToolGui.cpp" />
     <ClCompile Include="Dependencies\SmSdk\src\MyPlayer.cpp" />
+    <ClCompile Include="Dependencies\SmSdk\src\Player.cpp" />
     <ClCompile Include="Dependencies\SmSdk\src\PointerGetters.cpp" />
     <ClCompile Include="Code\Utils\Console.cpp" />
   </ItemGroup>
@@ -149,16 +150,23 @@
     <ClInclude Include="Code\ColorPreset.hpp" />
     <ClInclude Include="Code\Utils\Buffer.hpp" />
     <ClInclude Include="Code\Utils\MathUtils.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\AreaTriggerManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\AudioManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Base\Aligned16Base.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\boost_include.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\bullet_include.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Character.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\CharacterManager.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\ContainerManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\BodyJointPhysicsProxy.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\ChildShape.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\Joint.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\JointPhysicsProxy.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\RigidBody.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\Shape.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\fmod_include.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\GameSettings.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\GameState.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\HudGui2.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\InGameGuiManagerInterface.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Gui\PaintToolGui.hpp" />
@@ -166,12 +174,20 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\HarvestableManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Harvestable\HarvestablePhysicsProxy.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\InputManager.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\jsoncpp_include.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\mygui_include.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\NetObjManager.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\offsets.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Pathfinder.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Player.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\PlayerManager.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\PortalManager.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\StaticValues.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\steamapi_include.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\TimestampCheck.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\ClientTool.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Tool\PaintTool.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\unreferenced_params.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\Color.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Creation\CreationManager.hpp" />
     <ClInclude Include="Code\CustomPaintToolGui.hpp" />
@@ -198,6 +214,7 @@
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\config.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\Memory.hpp" />
     <ClInclude Include="Dependencies\SmSdk\include\SmSdk\Util\StaticVariable.hpp" />
+    <ClInclude Include="Dependencies\SmSdk\include\SmSdk\win_include.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
